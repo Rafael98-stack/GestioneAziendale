@@ -40,4 +40,7 @@ public class PosizioneLavorativaController {
         return new ResponseEntity<>(
                 new PosizioneLavorativaResponse(id),HttpStatus.OK);
     }
+
+    @PutMapping("/update/{id}")
+    public
 }
