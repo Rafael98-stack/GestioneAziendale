@@ -37,4 +37,7 @@ public class Dipendente {
 
     @OneToMany(mappedBy = "dipendente")
     private Set<News> newses;
+
+    @OneToMany(mappedBy = "dipendente")
+    private Set<ComunicazioneAziendale> comunicazioni_aziendali;
 }
