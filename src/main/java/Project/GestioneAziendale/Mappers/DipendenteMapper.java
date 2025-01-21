@@ -1,12 +1,16 @@
 package Project.GestioneAziendale.Mappers;
 
 import Project.GestioneAziendale.Dtos.DipendenteDtos.DipendenteRequestRegister;
-import Project.GestioneAziendale.Dtos.DipendenteDtos.DipendenteRequestUpdate;
 import Project.GestioneAziendale.Entities.Dipendente;
+import Project.GestioneAziendale.Services.DipartimentoService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class DipendenteMapper {
+    @Autowired
+    DipartimentoService dipartimentoService;
+
     public Dipendente fromDipendenteRequestRegister(DipendenteRequestRegister dipendenteRequestRegister){
         return Dipendente
         .builder()
@@ -15,10 +19,10 @@ public class DipendenteMapper {
         .cognome(dipendenteRequestRegister.cognome())
         .data_nascita(dipendenteRequestRegister.data_nascita())
         .nome(dipendenteRequestRegister.nome())
-        .dipartimento()
+        .dipartimento(dipartimentoService.getDipartimentoById(dipendenteRequestRegister.id_dipartimento()))
         .luogo_nascita(dipendenteRequestRegister.luogo_nascita())
         .telefono(dipendenteRequestRegister.telefono())
-        .immagine_profilo(dipendenteRequestRegister)
+        .immagine_profilo(dipendenteRequestRegister.immagine_profilo())
         .build();
     }
 

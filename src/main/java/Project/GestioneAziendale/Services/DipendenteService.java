@@ -19,6 +19,9 @@ public class DipendenteService {
     @Autowired
     DipendeteRepository dipendeteRepository;
 
+    @Autowired
+    DipartimentoService dipartimentoService;
+
     public void registerDipendente(DipendenteRequestRegister dipendenteRequestRegister){
         Dipendente dipendente = dipendenteMapper.fromDipendenteRequestRegister(dipendenteRequestRegister);
         dipendeteRepository.save(dipendente);
@@ -38,7 +41,7 @@ public class DipendenteService {
                 .orElseThrow(() -> new EntityNotFoundException("dipendente con id " + id_dipendente + " non trovato"));
         dipendente.setCognome(dipendenteRequestUpdate.cognome());
         dipendente.setEmail(dipendenteRequestUpdate.email());
-        dipendente.setDipartimento(dipendenteRequestUpdate.id_dipartimento());
+        dipendente.setDipartimento(dipartimentoService.getDipartimentoById(dipendenteRequestUpdate.id_dipartimento()));
         dipendente.setNome(dipendenteRequestUpdate.nome());
         dipendente.setData_nascita(dipendenteRequestUpdate.data_nascita());
         dipendente.setPassword(dipendenteRequestUpdate.password());
