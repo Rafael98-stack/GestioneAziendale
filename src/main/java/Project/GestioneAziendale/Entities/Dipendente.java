@@ -1,10 +1,7 @@
 package Project.GestioneAziendale.Entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -15,16 +12,25 @@ import java.util.Set;
 @NoArgsConstructor
 @Setter
 @Getter
+@Builder
+
 public class Dipendente {
     @Id
     @GeneratedValue
     private Long Id;
+    @Column(nullable = false)
     private String nome;
+    @Column(nullable = false)
     private String cognome;
+    @Column(nullable = false, unique = true)
     private String email;
+    @Column(nullable = false)
     private String password;
+    @Column(nullable = false)
     private LocalDate data_nascita;
+    @Column(nullable = false)
     private String luogo_nascita;
+    @Column(nullable = false, unique = true)
     private String telefono;
     private String immagine_profilo;
 
