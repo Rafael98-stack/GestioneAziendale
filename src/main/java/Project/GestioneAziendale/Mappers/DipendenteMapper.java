@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class DipendenteMapper {
     public Dipendente fromDipendenteRequestRegister(DipendenteRequestRegister dipendenteRequestRegister){
-return Dipendente
+        return Dipendente
         .builder()
         .email(dipendenteRequestRegister.email())
         .password(dipendenteRequestRegister.password())
