@@ -53,6 +53,7 @@ public class PosizioneLavorativaService {
             }
         }).collect(Collectors.toSet()));
 
+        return posizioneLavorativaRepository.save(posizioneLavorativa);
     }
 
     public void deleteById(Long id){
