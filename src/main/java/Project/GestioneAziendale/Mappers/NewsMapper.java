@@ -17,6 +17,7 @@ public class NewsMapper {
                 .titolo(newsRequest.titolo())
                 .contenuto(newsRequest.contenuto())
                 .dipendente(dipendenteService.getDipendenteById(newsRequest.id_dipendente()))
+                .immagine(newsRequest.immagine())
                 .build();
     }
 }
