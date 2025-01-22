@@ -35,10 +35,10 @@ public class DipendenteMapper {
                 .cognome(dipendenteRequestUpdate.cognome())
                 .data_nascita(dipendenteRequestUpdate.data_nascita())
                 .nome(dipendenteRequestUpdate.nome())
-                .dipartimento()
+                .dipartimento(dipartimentoService.getDipartimentoById(dipendenteRequestUpdate.id_dipartimento()))
                 .luogo_nascita(dipendenteRequestUpdate.luogo_nascita())
                 .telefono(dipendenteRequestUpdate.telefono())
-                .immagine_profilo(dipendenteRequestUpdate)
+                .immagine_profilo(dipendenteRequestUpdate.immagine_profilo())
                 .build();
     }
 }

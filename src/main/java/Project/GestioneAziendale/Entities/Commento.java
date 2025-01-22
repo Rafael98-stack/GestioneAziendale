@@ -3,8 +3,6 @@ package Project.GestioneAziendale.Entities;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
-
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,11 +19,7 @@ public class Commento {
     @JoinColumn(name = "id_dipendente")
     private Dipendente dipendente;
 
-    @ManyToMany
-    @JoinTable(name = "commento_news",
-    joinColumns = @JoinColumn(name = "id_commento"),
-            inverseJoinColumns = @JoinColumn(name = "id_news")
-    )
-    private List<News> newses;
+    @ManyToOne
+    private Long id_news;
 
 }

@@ -46,7 +46,7 @@ public class CommentoService {
                 .orElseThrow(()-> new EntityNotFoundException("Commento con id " + id_commento + " non trovato"));
         commento.setContenuto(commentoInsertUpdate.contenuto());
         commento.setDipendente(dipendenteService.getDipendenteById(commentoInsertUpdate.id_dipendente()));
-        commento.setNewses();
+        commento.setId_news(commentoInsertUpdate.id_newse());
 
         return CommentoResponse
                 .builder()
