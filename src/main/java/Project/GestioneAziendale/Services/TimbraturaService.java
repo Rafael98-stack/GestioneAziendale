@@ -60,8 +60,8 @@ public class TimbraturaService
         return timbraturaRepository.save(timbratura);
     }
 
-    public void removeTimbraturaById(Long id_dipendente){
-        TimbraturaRepository.deleteById(id_dipendente);
+    public void removeTimbraturaById(Long idTimbratura){timbraturaRepository.deleteById(idTimbratura);}
+
     }
 
 }
