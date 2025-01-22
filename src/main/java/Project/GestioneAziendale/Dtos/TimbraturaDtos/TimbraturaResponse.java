@@ -1,6 +1,11 @@
 package Project.GestioneAziendale.Dtos.TimbraturaDtos;
 
-public record TimbraturaResponse ()
+import lombok.Builder;
+
+@Builder
+public record TimbraturaResponse (
+        Long id
+)
 {
 
 }
