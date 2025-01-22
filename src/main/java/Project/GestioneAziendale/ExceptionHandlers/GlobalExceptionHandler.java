@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
     @ExceptionHandler(MyEntityNotFoundException.class)
     public ResponseEntity<ErrorResponse> handle(MyEntityNotFoundException exception) {
+
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(ErrorResponse
@@ -21,4 +22,5 @@ public class GlobalExceptionHandler {
                         .message(exception.getMessage())
                         .build());
     }
+
 }

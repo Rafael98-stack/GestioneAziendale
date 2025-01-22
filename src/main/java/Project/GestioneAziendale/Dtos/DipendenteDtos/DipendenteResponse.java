@@ -1,4 +1,10 @@
 package Project.GestioneAziendale.Dtos.DipendenteDtos;
 
-public record DipendenteResponse() {
+import lombok.Builder;
+
+@Builder
+public record DipendenteResponse(
+        Long id
+) {
+
 }
