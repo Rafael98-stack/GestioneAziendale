@@ -1,4 +1,4 @@
-package Project.GestioneAziendale.Controllers;
+ package Project.GestioneAziendale.Controllers;
 
 import Project.GestioneAziendale.Dtos.PosizioneLavorativaDtos.PosizioneLavorativaRequest;
 import Project.GestioneAziendale.Dtos.PosizioneLavorativaDtos.PosizioneLavorativaResponse;
