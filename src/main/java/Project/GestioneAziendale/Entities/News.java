@@ -3,6 +3,7 @@ package Project.GestioneAziendale.Entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -18,12 +19,12 @@ public class News {
     private Long id;
     private String titolo;
     private String contenuto;
-    private Long like;
+    private Long likes = 0L;
 
     @ManyToOne
     @JoinColumn(name = "id_dipendente")
     private Dipendente dipendente;
 
     @ManyToMany(mappedBy = "newses")
-    private List<Commento> commenti;
+    private List<Commento> commenti = new ArrayList<>();
 }
