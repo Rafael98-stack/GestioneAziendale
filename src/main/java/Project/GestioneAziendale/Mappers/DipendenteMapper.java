@@ -1,6 +1,7 @@
 package Project.GestioneAziendale.Mappers;
 
 import Project.GestioneAziendale.Dtos.DipendenteDtos.DipendenteRequestRegister;
+import Project.GestioneAziendale.Dtos.DipendenteDtos.DipendenteRequestUpdate;
 import Project.GestioneAziendale.Entities.Dipendente;
 import Project.GestioneAziendale.Services.DipartimentoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,18 +27,18 @@ public class DipendenteMapper {
         .build();
     }
 
-//    public Dipendente fromDipendenteRequestUpdate(DipendenteRequestUpdate dipendenteRequestUpdate){
-//        return Dipendente
-//                .builder()
-//                .email(dipendenteRequestUpdate.email())
-//                .password(dipendenteRequestUpdate.password())
-//                .cognome(dipendenteRequestUpdate.cognome())
-//                .data_nascita(dipendenteRequestUpdate.data_nascita())
-//                .nome(dipendenteRequestUpdate.nome())
-//                .dipartimento()
-//                .luogo_nascita(dipendenteRequestUpdate.luogo_nascita())
-//                .telefono(dipendenteRequestUpdate.telefono())
-//                .immagine_profilo(dipendenteRequestUpdate)
-//                .build();
-//    }
+    public Dipendente fromDipendenteRequestUpdate(DipendenteRequestUpdate dipendenteRequestUpdate){
+        return Dipendente
+                .builder()
+                .email(dipendenteRequestUpdate.email())
+                .password(dipendenteRequestUpdate.password())
+                .cognome(dipendenteRequestUpdate.cognome())
+                .data_nascita(dipendenteRequestUpdate.data_nascita())
+                .nome(dipendenteRequestUpdate.nome())
+                .dipartimento()
+                .luogo_nascita(dipendenteRequestUpdate.luogo_nascita())
+                .telefono(dipendenteRequestUpdate.telefono())
+                .immagine_profilo(dipendenteRequestUpdate)
+                .build();
+    }
 }
