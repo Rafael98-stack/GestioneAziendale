@@ -34,7 +34,7 @@ public class Dipendente {
     private String telefono;
     private String immagine_profilo;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "id_dipartimento")
     private Dipartimento dipartimento;
 
