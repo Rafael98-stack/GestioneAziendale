@@ -5,7 +5,6 @@ import Project.GestioneAziendale.Dtos.PosizioneLavorativaDtos.PosizioneLavorativ
 import Project.GestioneAziendale.Entities.PosizioneLavorativa;
 import Project.GestioneAziendale.Services.PosizioneLavorativaService;
 import jakarta.validation.Valid;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,6 +40,4 @@ public class PosizioneLavorativaController {
                 new PosizioneLavorativaResponse(id),HttpStatus.OK);
     }
 
-    @PutMapping("/update/{id}")
-    public
 }
