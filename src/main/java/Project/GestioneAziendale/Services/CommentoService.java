@@ -2,6 +2,7 @@ package Project.GestioneAziendale.Services;
 
 import Project.GestioneAziendale.Dtos.CommentoDtos.CommentoInsertUpdate;
 import Project.GestioneAziendale.Dtos.CommentoDtos.CommentoRequestInsert;
+import Project.GestioneAziendale.Dtos.CommentoDtos.CommentoResponse;
 import Project.GestioneAziendale.Entities.Commento;
 import Project.GestioneAziendale.Mappers.CommentoMapper;
 import Project.GestioneAziendale.Repositories.CommentoRepository;
@@ -23,9 +24,12 @@ public class CommentoService {
     @Autowired
     DipendenteService dipendenteService;
 
-    public void insertCommento(CommentoRequestInsert commentoRequestInsert){
+    public CommentoResponse insertCommento(CommentoRequestInsert commentoRequestInsert){
         Commento commento = commentoMapper.fromCommentoRequestInsert(commentoRequestInsert);
-        commentoRepository.save(commento);
+        return CommentoResponse
+                .builder()
+                .id(commentoRepository.save(commento).getId())
+                .build();
     }
 
     public Commento getCommentoById(Long id_commento){
@@ -37,14 +41,17 @@ public class CommentoService {
         return commentoRepository.findAll();
     }
 
-    public Commento updateCommentoById(Long id_commento, CommentoInsertUpdate commentoInsertUpdate){
+    public CommentoResponse updateCommentoById(Long id_commento, CommentoInsertUpdate commentoInsertUpdate){
         Commento commento = commentoRepository.findById(id_commento)
                 .orElseThrow(()-> new EntityNotFoundException("Commento con id " + id_commento + " non trovato"));
         commento.setContenuto(commentoInsertUpdate.contenuto());
         commento.setDipendente(dipendenteService.getDipendenteById(commentoInsertUpdate.id_dipendente()));
         commento.setNewses();
 
-        return commentoRepository.save(commento);
+        return CommentoResponse
+                .builder()
+                .id(commentoRepository.save(commento).getId())
+                .build();
     }
 
     public void removeCommentoById(Long id_commento){

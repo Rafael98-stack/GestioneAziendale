@@ -2,6 +2,7 @@ package Project.GestioneAziendale.Services;
 
 import Project.GestioneAziendale.Dtos.DipendenteDtos.DipendenteRequestRegister;
 import Project.GestioneAziendale.Dtos.DipendenteDtos.DipendenteRequestUpdate;
+import Project.GestioneAziendale.Dtos.DipendenteDtos.DipendenteResponse;
 import Project.GestioneAziendale.Entities.Dipendente;
 import Project.GestioneAziendale.Mappers.DipendenteMapper;
 import Project.GestioneAziendale.Repositories.DipendeteRepository;
@@ -22,9 +23,12 @@ public class DipendenteService {
     @Autowired
     DipartimentoService dipartimentoService;
 
-    public void registerDipendente(DipendenteRequestRegister dipendenteRequestRegister){
+    public DipendenteResponse registerDipendente(DipendenteRequestRegister dipendenteRequestRegister){
         Dipendente dipendente = dipendenteMapper.fromDipendenteRequestRegister(dipendenteRequestRegister);
-        dipendeteRepository.save(dipendente);
+      return DipendenteResponse
+              .builder()
+              .id(dipendeteRepository.save(dipendente).getId())
+              .build();
     }
 
     public Dipendente getDipendenteById(Long id_dipendente){
@@ -36,7 +40,7 @@ public class DipendenteService {
         return dipendeteRepository.findAll();
     }
 
-    public Dipendente updateDipendeteById(Long id_dipendente, DipendenteRequestUpdate dipendenteRequestUpdate){
+    public DipendenteResponse updateDipendeteById(Long id_dipendente, DipendenteRequestUpdate dipendenteRequestUpdate){
         Dipendente dipendente = dipendeteRepository.findById(id_dipendente)
                 .orElseThrow(() -> new EntityNotFoundException("dipendente con id " + id_dipendente + " non trovato"));
         dipendente.setCognome(dipendenteRequestUpdate.cognome());
@@ -49,7 +53,10 @@ public class DipendenteService {
         dipendente.setImmagine_profilo(dipendenteRequestUpdate.immagine_profilo());
         dipendente.setLuogo_nascita(dipendenteRequestUpdate.luogo_nascita());
 
-        return dipendeteRepository.save(dipendente);
+        return DipendenteResponse
+                .builder()
+                .id(dipendeteRepository.save(dipendente).getId())
+                .build();
     }
 
     public void removeDipendenteById(Long id_dipendente){

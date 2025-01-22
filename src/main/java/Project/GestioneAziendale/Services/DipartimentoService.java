@@ -2,6 +2,7 @@ package Project.GestioneAziendale.Services;
 
 import Project.GestioneAziendale.Dtos.DipartimentoDtos.DipartimentoRequestInsert;
 import Project.GestioneAziendale.Dtos.DipartimentoDtos.DipartimentoRequestUpdate;
+import Project.GestioneAziendale.Dtos.DipartimentoDtos.DipartimentoResponse;
 import Project.GestioneAziendale.Entities.Dipartimento;
 import Project.GestioneAziendale.Mappers.DipartimentoMapper;
 import Project.GestioneAziendale.Repositories.DipartimentoRepository;
@@ -24,9 +25,12 @@ public class DipartimentoService {
     @Autowired
     PosizioneLavorativaService posizioneLavorativaService;
 
-    public void insertDipartimento(DipartimentoRequestInsert dipartimentoRequestInsert){
+    public DipartimentoResponse insertDipartimento(DipartimentoRequestInsert dipartimentoRequestInsert){
         Dipartimento dipartimento = dipartimentoMapper.fromDipartimentoRequestInsert(dipartimentoRequestInsert);
-        dipartimentoRepository.save(dipartimento);
+        return DipartimentoResponse
+                .builder()
+                .id(dipartimentoRepository.save(dipartimento).getId())
+                .build();
     }
 
     public Dipartimento getDipartimentoById(Long id_dipartimento){
@@ -34,7 +38,7 @@ public class DipartimentoService {
                 .orElseThrow(() -> new EntityNotFoundException("Dipartimento con id " + id_dipartimento + " non trovato"));
     }
 
-    public Dipartimento updateDipartimentoById(Long id_dipartimento, DipartimentoRequestUpdate dipartimentoRequestUpdate){
+    public DipartimentoResponse updateDipartimentoById(Long id_dipartimento, DipartimentoRequestUpdate dipartimentoRequestUpdate){
         Dipartimento dipartimento = dipartimentoRepository.findById(id_dipartimento)
                 .orElseThrow(() -> new EntityNotFoundException("Dipartimento con id " + id_dipartimento + " non trovato"));
         dipartimento.setNome(dipartimentoRequestUpdate.nome());
@@ -46,7 +50,10 @@ public class DipartimentoService {
                 throw new RuntimeException(e);
             }
         }).collect(Collectors.toSet()));
-        return dipartimento;
+        return DipartimentoResponse
+                .builder()
+                .id(dipartimentoRepository.save(dipartimento).getId())
+                .build();
     }
 
     public List<Dipartimento> getAllDipartimenti(){

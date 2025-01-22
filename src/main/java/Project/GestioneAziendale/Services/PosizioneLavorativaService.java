@@ -40,7 +40,7 @@ public class PosizioneLavorativaService {
                 .build();
     }
 
-    public PosizioneLavorativa updatePosizioneById(Long id, PosizioneLavorativaUpdate posizioneLavorativaUpdate){
+    public PosizioneLavorativaResponse updatePosizioneById(Long id, PosizioneLavorativaUpdate posizioneLavorativaUpdate){
         PosizioneLavorativa posizioneLavorativa = posizioneLavorativaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Posizione non trovata"));
         posizioneLavorativa.setNome(posizioneLavorativaUpdate.nome());
@@ -53,7 +53,10 @@ public class PosizioneLavorativaService {
             }
         }).collect(Collectors.toSet()));
 
-        return posizioneLavorativaRepository.save(posizioneLavorativa);
+        return PosizioneLavorativaResponse
+                .builder()
+                .id(posizioneLavorativaRepository.save(posizioneLavorativa).getId())
+                .build();
     }
 
     public void deleteById(Long id){
