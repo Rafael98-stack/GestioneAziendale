@@ -35,6 +35,7 @@ public class NewsService {
         News news = newsRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("news non esistente"));
         news.setTitolo(newsUpdate.titolo());
         news.setContenuto(newsUpdate.contenuto());
+        news.setImmagine(newsUpdate.immagine());
         return newsRepository.save(news);
     }
 
