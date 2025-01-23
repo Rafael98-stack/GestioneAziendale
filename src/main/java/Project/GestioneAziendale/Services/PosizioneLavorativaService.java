@@ -8,6 +8,7 @@ import Project.GestioneAziendale.Mappers.PosizioneLavorativaMapper;
 import Project.GestioneAziendale.Repositories.PosizioneLavorativaRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,12 +16,20 @@ import java.util.stream.Collectors;
 
 @Service
 public class PosizioneLavorativaService {
+
+    private final PosizioneLavorativaRepository posizioneLavorativaRepository;
+
+    private final PosizioneLavorativaMapper posizioneLavorativaMapper;
+
+    private final DipartimentoService dipartimentoService;
+
     @Autowired
-    private PosizioneLavorativaRepository posizioneLavorativaRepository;
-    @Autowired
-    private PosizioneLavorativaMapper posizioneLavorativaMapper;
-    @Autowired
-    private DipartimentoService dipartimentoService;
+    @Lazy
+    public PosizioneLavorativaService(DipartimentoService dipartimentoService, PosizioneLavorativaMapper posizioneLavorativaMapper, PosizioneLavorativaRepository posizioneLavorativaRepository) {
+        this.dipartimentoService = dipartimentoService;
+        this.posizioneLavorativaMapper = posizioneLavorativaMapper;
+        this.posizioneLavorativaRepository = posizioneLavorativaRepository;
+    }
 
     public PosizioneLavorativa getById(Long id){
         return  posizioneLavorativaRepository
