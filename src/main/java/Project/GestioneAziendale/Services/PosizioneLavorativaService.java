@@ -5,6 +5,7 @@ import Project.GestioneAziendale.Dtos.PosizioneLavorativaDtos.PosizioneLavorativ
 import Project.GestioneAziendale.Dtos.PosizioneLavorativaDtos.PosizioneLavorativaUpdate;
 import Project.GestioneAziendale.Entities.PosizioneLavorativa;
 import Project.GestioneAziendale.Mappers.PosizioneLavorativaMapper;
+import Project.GestioneAziendale.Repositories.DipartimentoRepository;
 import Project.GestioneAziendale.Repositories.PosizioneLavorativaRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +16,21 @@ import java.util.stream.Collectors;
 
 @Service
 public class PosizioneLavorativaService {
+
+    private final PosizioneLavorativaRepository posizioneLavorativaRepository;
+
+    private final PosizioneLavorativaMapper posizioneLavorativaMapper;
+
+    private final DipartimentoRepository dipartimentoRepository;
+
+    public PosizioneLavorativaService(PosizioneLavorativaRepository posizioneLavorativaRepository, PosizioneLavorativaMapper posizioneLavorativaMapper, DipartimentoRepository dipartimentoRepository) {
+        this.posizioneLavorativaRepository = posizioneLavorativaRepository;
+        this.posizioneLavorativaMapper = posizioneLavorativaMapper;
+        this.dipartimentoRepository = dipartimentoRepository;
+    }
+
     @Autowired
-    private PosizioneLavorativaRepository posizioneLavorativaRepository;
-    @Autowired
-    private PosizioneLavorativaMapper posizioneLavorativaMapper;
-    @Autowired
-    private DipartimentoService dipartimentoService;
+
 
     public PosizioneLavorativa getById(Long id){
         return  posizioneLavorativaRepository
@@ -47,7 +57,8 @@ public class PosizioneLavorativaService {
         posizioneLavorativa.setDescrizione(posizioneLavorativaUpdate.descrizione());
         posizioneLavorativa.setDipartimenti(posizioneLavorativaUpdate.dipartimenti().stream().map(id_dip -> {
             try {
-                return dipartimentoService.getDipartimentoById(id_dip);
+                return dipartimentoRepository.findById(id_dip)
+                        .orElseThrow(() -> new RuntimeException("Dipartimento non trovato"));
             } catch (RuntimeException e) {
                 throw new RuntimeException(e);
             }

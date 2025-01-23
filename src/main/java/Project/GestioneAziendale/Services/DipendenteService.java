@@ -5,6 +5,7 @@ import Project.GestioneAziendale.Dtos.DipendenteDtos.DipendenteRequestUpdate;
 import Project.GestioneAziendale.Dtos.DipendenteDtos.DipendenteResponse;
 import Project.GestioneAziendale.Entities.Dipendente;
 import Project.GestioneAziendale.Mappers.DipendenteMapper;
+import Project.GestioneAziendale.Repositories.DipartimentoRepository;
 import Project.GestioneAziendale.Repositories.DipendeteRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,13 +16,20 @@ import java.util.List;
 @Service
 public class DipendenteService {
 
-    @Autowired
-    DipendenteMapper dipendenteMapper;
-    @Autowired
-    DipendeteRepository dipendeteRepository;
+
+    private final DipendenteMapper dipendenteMapper;
+
+    private final DipendeteRepository dipendeteRepository;
+
+
+    private final DipartimentoRepository dipartimentoRepository;
 
     @Autowired
-    DipartimentoService dipartimentoService;
+    public DipendenteService(DipendenteMapper dipendenteMapper, DipendeteRepository dipendeteRepository, DipartimentoRepository dipartimentoRepository) {
+        this.dipendenteMapper = dipendenteMapper;
+        this.dipendeteRepository = dipendeteRepository;
+        this.dipartimentoRepository = dipartimentoRepository;
+    }
 
     public DipendenteResponse registerDipendente(DipendenteRequestRegister dipendenteRequestRegister){
         Dipendente dipendente = dipendenteMapper.fromDipendenteRequestRegister(dipendenteRequestRegister);
@@ -45,7 +53,8 @@ public class DipendenteService {
                 .orElseThrow(() -> new EntityNotFoundException("dipendente con id " + id_dipendente + " non trovato"));
         dipendente.setCognome(dipendenteRequestUpdate.cognome());
         dipendente.setEmail(dipendenteRequestUpdate.email());
-        dipendente.setDipartimento(dipartimentoService.getDipartimentoById(dipendenteRequestUpdate.id_dipartimento()));
+        dipendente.setDipartimento(dipartimentoRepository.findById(dipendenteRequestUpdate.id_dipartimento())
+                .orElseThrow(() -> new EntityNotFoundException("Dipartimento con id " + dipendenteRequestUpdate.id_dipartimento() + " non trovato")));
         dipendente.setNome(dipendenteRequestUpdate.nome());
         dipendente.setData_nascita(dipendenteRequestUpdate.data_nascita());
         dipendente.setPassword(dipendenteRequestUpdate.password());

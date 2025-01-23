@@ -6,6 +6,7 @@ import Project.GestioneAziendale.Dtos.DipartimentoDtos.DipartimentoResponse;
 import Project.GestioneAziendale.Entities.Dipartimento;
 import Project.GestioneAziendale.Mappers.DipartimentoMapper;
 import Project.GestioneAziendale.Repositories.DipartimentoRepository;
+import Project.GestioneAziendale.Repositories.PosizioneLavorativaRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,14 +17,22 @@ import java.util.stream.Collectors;
 @Service
 public class DipartimentoService {
 
-    @Autowired
-    DipartimentoRepository dipartimentoRepository;
+
+    private final DipartimentoRepository dipartimentoRepository;
+
+    private final DipartimentoMapper dipartimentoMapper;
+
+    private final PosizioneLavorativaRepository posizioneLavorativaRepository;
 
     @Autowired
-    DipartimentoMapper dipartimentoMapper;
+    public DipartimentoService(DipartimentoRepository dipartimentoRepository, DipartimentoMapper dipartimentoMapper, PosizioneLavorativaRepository posizioneLavorativaRepository) {
+        this.dipartimentoRepository = dipartimentoRepository;
+        this.dipartimentoMapper = dipartimentoMapper;
+        this.posizioneLavorativaRepository = posizioneLavorativaRepository;
+    }
 
     @Autowired
-    PosizioneLavorativaService posizioneLavorativaService;
+
 
     public DipartimentoResponse insertDipartimento(DipartimentoRequestInsert dipartimentoRequestInsert){
         Dipartimento dipartimento = dipartimentoMapper.fromDipartimentoRequestInsert(dipartimentoRequestInsert);
@@ -45,7 +54,8 @@ public class DipartimentoService {
         dipartimento.setDescrizione(dipartimentoRequestUpdate.descrizione());
         dipartimento.setPosizioniLavorative(dipartimentoRequestUpdate.id_posizione_lavorativa().stream().map(id -> {
             try {
-                return posizioneLavorativaService.getById(id);
+                return posizioneLavorativaRepository.findById(id)
+                        .orElseThrow(() -> new EntityNotFoundException("Posizione con id " + dipartimentoRequestUpdate.id_posizione_lavorativa() + " non trovato"));
             } catch (EntityNotFoundException e) {
                 throw new RuntimeException(e);
             }

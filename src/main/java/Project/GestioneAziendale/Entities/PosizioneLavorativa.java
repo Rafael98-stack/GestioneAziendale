@@ -1,12 +1,8 @@
 package Project.GestioneAziendale.Entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -15,7 +11,6 @@ import java.util.Set;
 @Setter
 @Getter
 @Builder
-
 public class PosizioneLavorativa {
     @Id
     @GeneratedValue
@@ -23,6 +18,9 @@ public class PosizioneLavorativa {
     private String nome;
     private String descrizione;
 
-    @ManyToMany(mappedBy = "posizioni_lavorative")
-    private Set<Dipartimento> dipartimenti = new HashSet<>();
+    // Da ricordare che mappedBy vuole esattamente il nome della variabile presente nell'altra entità in cui è influenzata la relazione
+    // Come nel nostro caso nell'entità Dipartimento:  private Set<PosizioneLavorativa> posizioniLavorative = new HashSet<>();
+    @ManyToMany(mappedBy = "posizioniLavorative")
+    private Set<Dipartimento> dipartimenti;
 }
+
