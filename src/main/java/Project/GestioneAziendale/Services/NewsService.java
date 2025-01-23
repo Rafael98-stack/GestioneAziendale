@@ -13,10 +13,16 @@ import java.util.List;
 
 @Service
 public class NewsService {
+
+    private final NewsRepository newsRepository;
+
+    private final NewsMapper newsMapper;
+
     @Autowired
-    NewsRepository newsRepository;
-    @Autowired
-    NewsMapper newsMapper;
+    public NewsService(NewsRepository newsRepository, NewsMapper newsMapper) {
+        this.newsRepository = newsRepository;
+        this.newsMapper = newsMapper;
+    }
 
     public void createNews(NewsRequest request){
         News news = newsMapper.fromNewsRequest(request);

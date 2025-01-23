@@ -20,6 +20,7 @@ public class Commento {
     private Dipendente dipendente;
 
     @ManyToOne
-    private Long id_news;
+    @JoinColumn(name = "id_news", nullable = false)
+    private News news;;
 
 }

@@ -18,7 +18,7 @@ public class CommentoMapper {
                 .builder()
                 .contenuto(commentoRequestInsert.contenuto())
                 .dipendente(dipendenteService.getDipendenteById(commentoRequestInsert.id_dipendente()))
-                .id_news(commentoRequestInsert.id_newse())
+                .news(newsService.getNewsById(commentoRequestInsert.id_newse()))
                 .build();
     }
 }

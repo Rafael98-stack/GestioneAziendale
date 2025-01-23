@@ -16,14 +16,19 @@ import java.util.stream.Collectors;
 @Service
 public class DipartimentoService {
 
-    @Autowired
-    DipartimentoRepository dipartimentoRepository;
+
+    private final DipartimentoRepository dipartimentoRepository;
+
+    private final DipartimentoMapper dipartimentoMapper;
+
+    private final PosizioneLavorativaService posizioneLavorativaService;
 
     @Autowired
-    DipartimentoMapper dipartimentoMapper;
-
-    @Autowired
-    PosizioneLavorativaService posizioneLavorativaService;
+    public DipartimentoService(DipartimentoRepository dipartimentoRepository, DipartimentoMapper dipartimentoMapper, PosizioneLavorativaService posizioneLavorativaService) {
+        this.dipartimentoRepository = dipartimentoRepository;
+        this.dipartimentoMapper = dipartimentoMapper;
+        this.posizioneLavorativaService = posizioneLavorativaService;
+    }
 
     public DipartimentoResponse insertDipartimento(DipartimentoRequestInsert dipartimentoRequestInsert){
         Dipartimento dipartimento = dipartimentoMapper.fromDipartimentoRequestInsert(dipartimentoRequestInsert);
