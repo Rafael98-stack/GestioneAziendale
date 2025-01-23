@@ -6,9 +6,9 @@ import Project.GestioneAziendale.Dtos.CommentoDtos.CommentoResponse;
 import Project.GestioneAziendale.Entities.Commento;
 import Project.GestioneAziendale.Mappers.CommentoMapper;
 import Project.GestioneAziendale.Repositories.CommentoRepository;
+import Project.GestioneAziendale.Repositories.DipendeteRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,14 +23,13 @@ public class CommentoService {
     private final CommentoMapper commentoMapper;
 
 
-    private final DipendenteService dipendenteService;
+    private final DipendeteRepository dipendeteRepository;
 
     @Autowired
-    @Lazy
-    public CommentoService(DipendenteService dipendenteService, CommentoMapper commentoMapper, CommentoRepository commentoRepository, CommentoRepository commentoRepository1, CommentoMapper commentoMapper1, DipendenteService dipendenteService1) {
-        this.commentoRepository = commentoRepository1;
-        this.commentoMapper = commentoMapper1;
-        this.dipendenteService = dipendenteService1;
+    public CommentoService(CommentoRepository commentoRepository, CommentoMapper commentoMapper, DipendeteRepository dipendeteRepository) {
+        this.commentoRepository = commentoRepository;
+        this.commentoMapper = commentoMapper;
+        this.dipendeteRepository = dipendeteRepository;
     }
 
     public CommentoResponse insertCommento(CommentoRequestInsert commentoRequestInsert){
@@ -54,7 +53,8 @@ public class CommentoService {
         Commento commento = commentoRepository.findById(id_commento)
                 .orElseThrow(()-> new EntityNotFoundException("Commento con id " + id_commento + " non trovato"));
         commento.setContenuto(commentoInsertUpdate.contenuto());
-        commento.setDipendente(dipendenteService.getDipendenteById(commentoInsertUpdate.id_dipendente()));
+        commento.setDipendente(dipendeteRepository.findById(commentoInsertUpdate.id_dipendente())
+                .orElseThrow(() -> new EntityNotFoundException("Dipendente con id " + commentoInsertUpdate.id_dipendente() + " non trovato")));
         commento.setNews(commentoRepository.findById(commentoInsertUpdate.id_newse()).get().getNews());
 
         return CommentoResponse
