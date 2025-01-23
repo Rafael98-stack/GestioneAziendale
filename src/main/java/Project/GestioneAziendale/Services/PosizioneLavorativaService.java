@@ -23,13 +23,13 @@ public class PosizioneLavorativaService {
 
     private final DipartimentoRepository dipartimentoRepository;
 
+    @Autowired
     public PosizioneLavorativaService(PosizioneLavorativaRepository posizioneLavorativaRepository, PosizioneLavorativaMapper posizioneLavorativaMapper, DipartimentoRepository dipartimentoRepository) {
         this.posizioneLavorativaRepository = posizioneLavorativaRepository;
         this.posizioneLavorativaMapper = posizioneLavorativaMapper;
         this.dipartimentoRepository = dipartimentoRepository;
     }
 
-    @Autowired
 
 
     public PosizioneLavorativa getById(Long id){

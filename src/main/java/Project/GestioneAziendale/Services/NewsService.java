@@ -1,6 +1,7 @@
 package Project.GestioneAziendale.Services;
 
 import Project.GestioneAziendale.Dtos.NewsDtos.NewsRequest;
+import Project.GestioneAziendale.Dtos.NewsDtos.NewsResponse;
 import Project.GestioneAziendale.Dtos.NewsDtos.NewsUpdate;
 import Project.GestioneAziendale.Entities.News;
 import Project.GestioneAziendale.Mappers.NewsMapper;
@@ -24,9 +25,12 @@ public class NewsService {
         this.newsMapper = newsMapper;
     }
 
-    public void createNews(NewsRequest request){
+    public NewsResponse createNews(NewsRequest request) {
         News news = newsMapper.fromNewsRequest(request);
-        newsRepository.save(news);
+        return NewsResponse
+                .builder()
+                .id(newsRepository.save(news).getId())
+                .build();
     }
 
     public News getNewsById(Long id){
@@ -37,12 +41,16 @@ public class NewsService {
         return newsRepository.findAll();
     }
 
-    public News updateNews(Long id, NewsUpdate newsUpdate){
+    public NewsResponse updateNews(Long id, NewsUpdate newsUpdate){
         News news = newsRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("news non esistente"));
         news.setTitolo(newsUpdate.titolo());
         news.setContenuto(newsUpdate.contenuto());
         news.setImmagine(newsUpdate.immagine());
-        return newsRepository.save(news);
+        return NewsResponse
+                .builder()
+                .id( newsRepository.save(news).getId())
+                .build();
+
     }
 
     public void likeNews(Long id){

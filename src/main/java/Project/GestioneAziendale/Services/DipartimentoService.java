@@ -31,9 +31,6 @@ public class DipartimentoService {
         this.posizioneLavorativaRepository = posizioneLavorativaRepository;
     }
 
-    @Autowired
-
-
     public DipartimentoResponse insertDipartimento(DipartimentoRequestInsert dipartimentoRequestInsert){
         Dipartimento dipartimento = dipartimentoMapper.fromDipartimentoRequestInsert(dipartimentoRequestInsert);
         return DipartimentoResponse

@@ -26,4 +26,5 @@ public class Timbratura {
     @OneToOne
     @JoinColumn(name = "id_dipendente")
     private Dipendente dipendente;
+
 }

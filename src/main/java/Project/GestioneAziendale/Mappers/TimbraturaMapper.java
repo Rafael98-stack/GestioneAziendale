@@ -1,12 +1,12 @@
 package Project.GestioneAziendale.Mappers;
 
-import Project.GestioneAziendale.Dtos.DipendenteDtos.DipendenteRequestRegister;
 import Project.GestioneAziendale.Dtos.TimbraturaDtos.TimbraturaRequestRegister;
-import Project.GestioneAziendale.Dtos.TimbraturaDtos.TimbraturaRequestUpdate;
 import Project.GestioneAziendale.Entities.Timbratura;
 import Project.GestioneAziendale.Services.DipendenteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class TimbraturaMapper
 {
     @Autowired
@@ -16,15 +16,11 @@ public class TimbraturaMapper
     {
         return Timbratura
                 .builder()
-                .orario_entrata(timbraturaRequestRegister.orario_entrata())
-                .inizio_pranzo(timbraturaRequestRegister.inizio_pranzo())
-                .fine_pranzo(timbraturaRequestRegister.fine_pranzo())
-                .uscita(timbraturaRequestRegister.uscita())
-                .data_corrente(timbraturaRequestRegister.data_corrente())
+                .dipendente(dipendenteService.getDipendenteById(timbraturaRequestRegister.id_dipendente()))
                 .build();
 
     }
-
+    /*
     public Timbratura fromTimbraturaRequestUpdate(TimbraturaRequestUpdate timbraturaRequestUpdate)
     {
         return Timbratura
@@ -37,4 +33,5 @@ public class TimbraturaMapper
                 .build();
 
     }
+    */
 }
