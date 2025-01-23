@@ -2,6 +2,7 @@ package Project.GestioneAziendale.Services;
 
 import Project.GestioneAziendale.Dtos.DipendenteDtos.DipendenteRequestRegister;
 import Project.GestioneAziendale.Dtos.TimbraturaDtos.TimbraturaRequestUpdate;
+import Project.GestioneAziendale.Dtos.TimbraturaDtos.TimbraturaResponse;
 import Project.GestioneAziendale.Entities.Dipendente;
 import Project.GestioneAziendale.Entities.Timbratura;
 import Project.GestioneAziendale.Mappers.TimbraturaMapper;
@@ -25,22 +26,26 @@ public class TimbraturaService
     @Autowired
     private DipendeteRepository dipendeteRepository;
 
-    public void registerTimbratura(DipendenteRequestRegister dipendenteRequestRegister) {
+    public void registerTimbratura(DipendenteRequestRegister dipendenteRequestRegister)
+    {
         Timbratura timbratura = timbraturaMapper.fromDipendenteRequestRegister(dipendenteRequestRegister);
         timbraturaRepository.save(timbratura);
     }
 
-    public Timbratura getTimbraturaById(Long idTimbratura) {
+    public Timbratura getTimbraturaById(Long idTimbratura)
+    {
         return timbraturaRepository.
                 findById(idTimbratura)
                 .orElseThrow(() -> new EntityNotFoundException("Timbratura con ID " + idTimbratura + " non trovata"));
     }
 
-    public List<Timbratura> getAllTimbratura() {
+    public List<Timbratura> getAllTimbratura()
+    {
         return timbraturaRepository.findAll();
     }
 
-    public TimbraturaRequestUpdate updateTimbraturaById(Long idTimbratura, TimbraturaRequestUpdate timbraturaRequestUpdate) {
+    public TimbraturaRequestUpdate updateTimbraturaById(Long idTimbratura, TimbraturaRequestUpdate timbraturaRequestUpdate)
+    {
         // Recupera la timbratura esistente o lancia un'eccezione se non trovata
         Timbratura timbratura = timbraturaRepository.findById(idTimbratura)
                 .orElseThrow(() -> new EntityNotFoundException("Timbratura con ID " + idTimbratura + " non trovata"));
@@ -51,21 +56,22 @@ public class TimbraturaService
         timbratura.setFine_pranzo(timbraturaRequestUpdate.Fine_pranzo());
         timbratura.setUscita(timbraturaRequestUpdate.Uscita());
 
-
-
-        if (timbraturaRequestUpdate.getDipendenteById != null) {
+        if (timbraturaRequestUpdate.getDipendenteById != null)
+        {
             // Aggiorna il dipendente associato (opzionale)
-            Dipendente dipendente = DipendenteService.findById(timbraturaRequestUpdate.getDipendenteById())
+            Dipendente dipendente = dipendenteService.findById(timbraturaRequestUpdate.getDipendenteById())
                     .orElseThrow(() -> new EntityNotFoundException("Dipendente con ID " + timbraturaRequestUpdate.getDipendenteById() + " non trovato"));
             timbratura.setDipendente(dipendente);
         }
 
         // Salva la timbratura aggiornata
-        return timbraturaRepository.save(timbratura);
+        return TimbraturaResponse
+                .builder()
+                .id(timbraturaRepository.save(dipendeteRepository.dipendente).getId())
+                .build();
     }
 
     public void removeTimbraturaById(Long idTimbratura){timbraturaRepository.deleteById(idTimbratura);}
 
     }
 
-}
