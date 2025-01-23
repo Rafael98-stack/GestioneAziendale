@@ -44,7 +44,7 @@ public class TimbraturaService
         return timbraturaRepository.findAll();
     }
 
-    public TimbraturaRequestUpdate updateTimbraturaById(Long idTimbratura, TimbraturaRequestUpdate timbraturaRequestUpdate)
+    public TimbraturaResponse updateTimbraturaById(Long idTimbratura, TimbraturaRequestUpdate timbraturaRequestUpdate)
     {
         // Recupera la timbratura esistente o lancia un'eccezione se non trovata
         Timbratura timbratura = timbraturaRepository.findById(idTimbratura)
@@ -56,18 +56,18 @@ public class TimbraturaService
         timbratura.setFine_pranzo(timbraturaRequestUpdate.Fine_pranzo());
         timbratura.setUscita(timbraturaRequestUpdate.Uscita());
 
-        if (timbraturaRequestUpdate.getDipendenteById != null)
+        if (timbratura.getDipendente() !=null)
         {
             // Aggiorna il dipendente associato (opzionale)
-            Dipendente dipendente = dipendenteService.findById(timbraturaRequestUpdate.getDipendenteById())
-                    .orElseThrow(() -> new EntityNotFoundException("Dipendente con ID " + timbraturaRequestUpdate.getDipendenteById() + " non trovato"));
+            Dipendente dipendente = dipendeteRepository.findById(timbratura.getDipendente().getId())
+                    .orElseThrow(() -> new EntityNotFoundException("Dipendente con ID " + timbratura.getDipendente() + " non trovato"));
             timbratura.setDipendente(dipendente);
         }
 
         // Salva la timbratura aggiornata
         return TimbraturaResponse
                 .builder()
-                .id(timbraturaRepository.save(dipendeteRepository.dipendente).getId())
+                .id(timbraturaRepository.save(timbratura).getId())
                 .build();
     }
 
