@@ -1,6 +1,6 @@
 package Project.GestioneAziendale.Services;
 
-import Project.GestioneAziendale.Dtos.DipendenteDtos.DipendenteRequestRegister;
+import Project.GestioneAziendale.Dtos.TimbraturaDtos.TimbraturaRequestRegister;
 import Project.GestioneAziendale.Dtos.TimbraturaDtos.TimbraturaRequestUpdate;
 import Project.GestioneAziendale.Dtos.TimbraturaDtos.TimbraturaResponse;
 import Project.GestioneAziendale.Entities.Dipendente;
@@ -26,9 +26,9 @@ public class TimbraturaService
     @Autowired
     private DipendeteRepository dipendeteRepository;
 
-    public void registerTimbratura(DipendenteRequestRegister dipendenteRequestRegister)
+    public void registerTimbratura(TimbraturaRequestRegister timbraturaRequestRegister)
     {
-        Timbratura timbratura = timbraturaMapper.fromDipendenteRequestRegister(dipendenteRequestRegister);
+        Timbratura timbratura = timbraturaMapper.fromTimbraturaRequestRegister(timbraturaRequestRegister);
         timbraturaRepository.save(timbratura);
     }
 
