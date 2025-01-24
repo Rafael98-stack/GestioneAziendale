@@ -1,6 +1,9 @@
 package Project.GestioneAziendale.Entities;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import lombok.*;
 
 import java.util.Set;
@@ -22,5 +25,6 @@ public class PosizioneLavorativa {
     // Come nel nostro caso nell'entità Dipartimento:  private Set<PosizioneLavorativa> posizioniLavorative = new HashSet<>();
     @ManyToMany(mappedBy = "posizioniLavorative")
     private Set<Dipartimento> dipartimenti;
+
 }
 

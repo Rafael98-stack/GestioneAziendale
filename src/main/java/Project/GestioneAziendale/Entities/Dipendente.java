@@ -46,4 +46,8 @@ public class Dipendente {
 
     @OneToMany(mappedBy = "dipendente")
     private Set<ComunicazioneAziendale> comunicazioni_aziendali;
+
+    @ManyToOne()
+    @JoinColumn(name = "id_posizione")
+    private PosizioneLavorativa posizioneLavorativa;
 }

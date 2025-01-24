@@ -12,7 +12,6 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -49,33 +48,11 @@ public class TimbraturaService
         return timbraturaRepository.findAll();
     }
 
-    public TimbraturaResponse updateTimbraturaById(Long idTimbratura, TimbraturaRequestUpdate timbraturaRequestUpdate,Integer scelta)
+    public TimbraturaResponse updateTimbraturaById(TimbraturaRequestUpdate timbraturaRequestUpdate)
     {
         // Recupera la timbratura esistente o lancia un'eccezione se non trovata
-        Timbratura timbratura = timbraturaRepository.findById(idTimbratura)
-                .orElseThrow(() -> new EntityNotFoundException("Timbratura con ID " + idTimbratura + " non trovata"));
-
-        // Aggiorna i campi della timbratura in base all'input
-        switch (scelta){
-            case 1:
-                timbratura.setOrario_entrata(LocalDateTime.now());
-                break;
-            case 2:
-                timbratura.setInizio_pranzo(LocalDateTime.now());
-                break;
-            case 3:
-                timbratura.setFine_pranzo(LocalDateTime.now());
-                break;
-            case 4:
-                timbratura.setUscita(LocalDateTime.now());
-                break;
-            default:
-                System.out.println("Nessuna scelta impostata");
-        }
-
-
-
-
+        Timbratura timbratura = timbraturaRepository.findById(timbraturaRequestUpdate.id_timbratura().longValue())
+                .orElseThrow(() -> new EntityNotFoundException("Timbratura con ID " + timbraturaRequestUpdate.id_timbratura() + " non trovata"));
 
         if (timbratura.getDipendente() !=null)
         {
