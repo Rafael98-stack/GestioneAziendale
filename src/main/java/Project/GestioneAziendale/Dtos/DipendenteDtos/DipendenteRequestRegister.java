@@ -21,7 +21,6 @@ public record DipendenteRequestRegister(
                 message = "Telefono non valido")
         String telefono,
         String immagine_profilo,
-        @NotNull(message = "il Dipartimento deve essere presente")
         Long id_dipartimento
 ) {
 }

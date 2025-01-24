@@ -2,6 +2,7 @@ package Project.GestioneAziendale.Mappers;
 
 import Project.GestioneAziendale.Dtos.DipendenteDtos.DipendenteRequestRegister;
 import Project.GestioneAziendale.Dtos.DipendenteDtos.DipendenteRequestUpdate;
+import Project.GestioneAziendale.Entities.Dipartimento;
 import Project.GestioneAziendale.Entities.Dipendente;
 import Project.GestioneAziendale.Repositories.DipartimentoRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -15,20 +16,24 @@ public class DipendenteMapper {
     DipartimentoRepository dipartimentoRepository;
 
     public Dipendente fromDipendenteRequestRegister(DipendenteRequestRegister dipendenteRequestRegister){
-        return Dipendente
-        .builder()
-        .email(dipendenteRequestRegister.email())
-        .password(dipendenteRequestRegister.password())
-        .cognome(dipendenteRequestRegister.cognome())
-        .data_nascita(dipendenteRequestRegister.data_nascita())
-        .nome(dipendenteRequestRegister.nome())
-        .dipartimento(dipartimentoRepository.findById(dipendenteRequestRegister.id_dipartimento())
-                .orElseThrow(()-> new EntityNotFoundException("Dipartimento con id " + dipendenteRequestRegister.id_dipartimento() + " non trovato")))
-        .luogo_nascita(dipendenteRequestRegister.luogo_nascita())
-        .telefono(dipendenteRequestRegister.telefono())
-        .immagine_profilo(dipendenteRequestRegister.immagine_profilo())
-        .build();
+        Dipartimento dipartimento = null;
+        if (dipendenteRequestRegister.id_dipartimento() != null) {
+            dipartimento = dipartimentoRepository.findById(dipendenteRequestRegister.id_dipartimento()).orElse(null);
+        }
+
+        return Dipendente.builder()
+                .email(dipendenteRequestRegister.email())
+                .password(dipendenteRequestRegister.password())
+                .cognome(dipendenteRequestRegister.cognome())
+                .data_nascita(dipendenteRequestRegister.data_nascita())
+                .nome(dipendenteRequestRegister.nome())
+                .dipartimento(dipartimento)
+                .luogo_nascita(dipendenteRequestRegister.luogo_nascita())
+                .telefono(dipendenteRequestRegister.telefono())
+                .immagine_profilo(dipendenteRequestRegister.immagine_profilo())
+                .build();
     }
+
 
     public Dipendente fromDipendenteRequestUpdate(DipendenteRequestUpdate dipendenteRequestUpdate){
         return Dipendente
