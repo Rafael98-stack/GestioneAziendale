@@ -9,6 +9,7 @@ public record DipartimentoRequestInsert(
         String nome,
         @NotBlank(message = "La descrizione del dipartimento non può essere blank o null")
         String descrizione,
+
         Set<Long> id_posizione_lavorativa
 ) {
 }

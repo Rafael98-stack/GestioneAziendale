@@ -35,9 +35,9 @@ public class TimbraturaController {
     }
 
 
-    @PutMapping("/update/{id}/{scelta}")
-    public ResponseEntity<TimbraturaResponse> update(@PathVariable Long id,@PathVariable Integer scelta, @RequestBody @Valid TimbraturaRequestUpdate request) {
-        return new ResponseEntity<>(timbraturaService.updateTimbraturaById(id, request,scelta), HttpStatus.OK);
+    @PutMapping("/update")
+    public ResponseEntity<TimbraturaResponse> update( @RequestBody @Valid TimbraturaRequestUpdate request) {
+        return new ResponseEntity<>(timbraturaService.updateTimbraturaById(request), HttpStatus.OK);
     }
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<TimbraturaResponse> deleteById(@PathVariable Long id){
