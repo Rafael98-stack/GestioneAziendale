@@ -27,6 +27,7 @@ public class NewsService {
 
     public NewsResponse createNews(NewsRequest request) {
         News news = newsMapper.fromNewsRequest(request);
+        news.setLikes(0L);
         return NewsResponse
                 .builder()
                 .id(newsRepository.save(news).getId())
@@ -56,6 +57,7 @@ public class NewsService {
     public void likeNews(Long id){
         News news = newsRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("news non esistente"));
         news.setLikes(news.getLikes() + 1);
+        newsRepository.save(news);
     }
 
     public void removeNews(Long id){

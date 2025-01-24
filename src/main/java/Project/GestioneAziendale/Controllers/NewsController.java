@@ -45,4 +45,10 @@ public class NewsController {
         return new ResponseEntity<>(
                 new NewsResponse(id),HttpStatus.OK);
     }
+
+    @PutMapping("/like/{id}")
+    public  ResponseEntity<NewsResponse> like(@PathVariable Long id){
+        newsService.likeNews(id);
+        return new ResponseEntity<>(new NewsResponse(id), HttpStatus.OK);
+    }
 }
