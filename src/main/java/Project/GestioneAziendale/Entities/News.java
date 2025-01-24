@@ -19,14 +19,12 @@ public class News {
     private Long id;
     private String titolo;
     private String contenuto;
-    private Long likes = 0L;
-    private String immagine;
+    private Long like = 0l;
 
     @ManyToOne
     @JoinColumn(name = "id_dipendente")
     private Dipendente dipendente;
 
-    @OneToMany
-    @JoinColumn(name = "id_commento")
+    @ManyToMany(mappedBy = "newses")
     private List<Commento> commenti = new ArrayList<>();
 }
