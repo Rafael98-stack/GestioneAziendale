@@ -4,6 +4,7 @@ import Project.GestioneAziendale.Dtos.DipartimentoDtos.DipartimentoRequestInsert
 import Project.GestioneAziendale.Dtos.DipartimentoDtos.DipartimentoRequestUpdate;
 import Project.GestioneAziendale.Dtos.DipartimentoDtos.DipartimentoResponse;
 import Project.GestioneAziendale.Entities.Dipartimento;
+import Project.GestioneAziendale.Entities.PosizioneLavorativa;
 import Project.GestioneAziendale.Mappers.DipartimentoMapper;
 import Project.GestioneAziendale.Repositories.DipartimentoRepository;
 import Project.GestioneAziendale.Repositories.PosizioneLavorativaRepository;
@@ -32,7 +33,8 @@ public class DipartimentoService {
     }
 
     public DipartimentoResponse insertDipartimento(DipartimentoRequestInsert dipartimentoRequestInsert){
-        Dipartimento dipartimento = dipartimentoMapper.fromDipartimentoRequestInsert(dipartimentoRequestInsert);
+    Dipartimento dipartimento = dipartimentoMapper.fromDipartimentoRequestInsert(dipartimentoRequestInsert);
+
         return DipartimentoResponse
                 .builder()
                 .id(dipartimentoRepository.save(dipartimento).getId())
