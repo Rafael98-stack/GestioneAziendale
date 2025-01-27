@@ -22,6 +22,7 @@ public record DipendenteRequestUpdate(
         String telefono,
         String immagine_profilo,
         @NotNull(message = "il Dipartimento deve essere presente")
-        Long id_dipartimento
+        Long id_dipartimento,
+        Long id_posizione
 ) {
 }

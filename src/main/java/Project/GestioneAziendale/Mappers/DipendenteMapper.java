@@ -5,6 +5,7 @@ import Project.GestioneAziendale.Dtos.DipendenteDtos.DipendenteRequestUpdate;
 import Project.GestioneAziendale.Entities.Dipartimento;
 import Project.GestioneAziendale.Entities.Dipendente;
 import Project.GestioneAziendale.Repositories.DipartimentoRepository;
+import Project.GestioneAziendale.Repositories.PosizioneLavorativaRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,9 @@ public class DipendenteMapper {
 
     @Autowired
     DipartimentoRepository dipartimentoRepository;
+
+    @Autowired
+    PosizioneLavorativaRepository posizioneLavorativaRepository;
 
     public Dipendente fromDipendenteRequestRegister(DipendenteRequestRegister dipendenteRequestRegister){
         Dipartimento dipartimento = null;
@@ -31,6 +35,9 @@ public class DipendenteMapper {
                 .luogo_nascita(dipendenteRequestRegister.luogo_nascita())
                 .telefono(dipendenteRequestRegister.telefono())
                 .immagine_profilo(dipendenteRequestRegister.immagine_profilo())
+                .posizioneLavorativa(posizioneLavorativaRepository
+                        .findById(dipendenteRequestRegister.id_posizione())
+                        .orElseThrow(()-> new EntityNotFoundException("Posizione lavorativa con id " + dipendenteRequestRegister.id_posizione() + " non trovato")))
                 .build();
     }
 
@@ -48,6 +55,9 @@ public class DipendenteMapper {
                 .luogo_nascita(dipendenteRequestUpdate.luogo_nascita())
                 .telefono(dipendenteRequestUpdate.telefono())
                 .immagine_profilo(dipendenteRequestUpdate.immagine_profilo())
+                .posizioneLavorativa(posizioneLavorativaRepository
+                        .findById(dipendenteRequestUpdate.id_posizione())
+                        .orElseThrow(()-> new EntityNotFoundException("Posizione lavorativa con id " + dipendenteRequestUpdate.id_posizione() + " non trovato")))
                 .build();
     }
 }
