@@ -20,6 +20,7 @@ public class News {
     private String titolo;
     private String contenuto;
     private Long like = 0l;
+    private String immagine;
 
     @ManyToOne
     @JoinColumn(name = "id_dipendente")

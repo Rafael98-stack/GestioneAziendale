@@ -17,13 +17,13 @@ import java.util.List;
 
 @Service
 public class NewsService {
-
+    @Autowired
     private final NewsRepository newsRepository;
-
+    @Autowired
     private final NewsMapper newsMapper;
-
+    @Autowired
     private final DipendeteRepository dipendeteRepository;
-
+    @Autowired
     private final PosizioneLavorativaRepository posizioneLavorativaRepository;
 
     @Autowired
@@ -43,7 +43,7 @@ public class NewsService {
 
         if (posizioneLavorativa.getNome().equalsIgnoreCase("publisher")){
             News news = newsMapper.fromNewsRequest(request);
-            news.setLikes(0L);
+            news.setLike(0L);
             return NewsResponse
                     .builder()
                     .id(newsRepository.save(news).getId())
@@ -86,7 +86,7 @@ public class NewsService {
 
     public void likeNews(Long id){
         News news = newsRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("news non esistente"));
-        news.setLikes(news.getLikes() + 1);
+        news.setLike(news.getLike() + 1);
         newsRepository.save(news);
     }
 
