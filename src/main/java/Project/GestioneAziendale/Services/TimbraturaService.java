@@ -48,11 +48,9 @@ public class TimbraturaService
         return timbraturaRepository.findAll();
     }
 
-    public TimbraturaResponse updateTimbraturaById(TimbraturaRequestUpdate timbraturaRequestUpdate)
-    {
+public TimbraturaResponse updateTimbraturaById(TimbraturaRequestUpdate timbraturaRequestUpdate) throws Exception {
         // Recupera la timbratura esistente o lancia un'eccezione se non trovata
-        Timbratura timbratura = timbraturaRepository.findById(timbraturaRequestUpdate.id_timbratura().longValue())
-                .orElseThrow(() -> new EntityNotFoundException("Timbratura con ID " + timbraturaRequestUpdate.id_timbratura() + " non trovata"));
+Timbratura timbratura = timbraturaMapper.fromTimbraturaRequestUpdate(timbraturaRequestUpdate);
 
         if (timbratura.getDipendente() !=null)
         {
