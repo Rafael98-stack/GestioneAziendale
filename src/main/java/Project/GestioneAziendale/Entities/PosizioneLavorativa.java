@@ -1,9 +1,6 @@
 package Project.GestioneAziendale.Entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Set;
@@ -26,5 +23,8 @@ public class PosizioneLavorativa {
     @ManyToMany(mappedBy = "posizioniLavorative")
     private Set<Dipartimento> dipartimenti;
 
+    @OneToMany
+    @JoinColumn(name = "id_dipendente")
+    private Set<Dipendente> dipendenti;
 }
 

@@ -21,6 +21,7 @@ public record DipendenteRequestRegister(
                 message = "Telefono non valido")
         String telefono,
         String immagine_profilo,
-        Long id_dipartimento
+        Long id_dipartimento,
+        Long id_posizione
 ) {
 }

@@ -35,13 +35,13 @@ public ResponseEntity<List<ComunicazioneAziendale>> getAll(){
     }
 
     @PostMapping("/create")
-public ResponseEntity<ComunicazioneAziendaleResponse> create(@RequestBody @Valid ComunicazioneAziendaleRequest request){
+public ResponseEntity<ComunicazioneAziendaleResponse> create(@RequestBody @Valid ComunicazioneAziendaleRequest request) throws Exception {
     return new ResponseEntity<>(comunicazioneAziendaleService.insertComunicazione(request), HttpStatus.CREATED);
     }
 
 
     @PutMapping("/update/{id}")
-public ResponseEntity<ComunicazioneAziendaleResponse> update(@PathVariable Long id, @RequestBody @Valid ComunicazioneAziendaleUpdate request) {
+public ResponseEntity<ComunicazioneAziendaleResponse> update(@PathVariable Long id, @RequestBody @Valid ComunicazioneAziendaleUpdate request) throws Exception {
     return new ResponseEntity<>(comunicazioneAziendaleService.updateComunicazioneById(id, request), HttpStatus.OK);
     }
     @DeleteMapping("/delete/{id}")

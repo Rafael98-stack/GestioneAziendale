@@ -42,7 +42,7 @@ public class NewsService {
         PosizioneLavorativa posizioneLavorativa = posizioneLavorativaRepository.findById(dipendente.getPosizioneLavorativa().getId())
                 .orElseThrow(() -> new EntityNotFoundException("Posizione non esiste"));
 
-        if (posizioneLavorativa.getNome().toLowerCase()=="publisher"){
+        if (posizioneLavorativa.getNome().equalsIgnoreCase("publisher")){
             News news = newsMapper.fromNewsRequest(request);
             news.setLikes(0L);
             return NewsResponse
@@ -70,7 +70,7 @@ public class NewsService {
         PosizioneLavorativa posizioneLavorativa = posizioneLavorativaRepository.findById(dipendente.getPosizioneLavorativa().getId())
                 .orElseThrow(() -> new EntityNotFoundException("Posizione non esiste"));
 
-        if (posizioneLavorativa.getNome().toLowerCase()=="publisher"){
+        if (posizioneLavorativa.getNome().equalsIgnoreCase("publisher")){
         News news = newsRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("news non esistente"));
         news.setTitolo(newsUpdate.titolo());
         news.setContenuto(newsUpdate.contenuto());
@@ -80,7 +80,7 @@ public class NewsService {
                 .id( newsRepository.save(news).getId())
                 .build();
         } else {
-            throw  new Exception("Non puoi creare una News");
+            throw  new Exception("Non puoi aggiornare una News");
         }
 
     }

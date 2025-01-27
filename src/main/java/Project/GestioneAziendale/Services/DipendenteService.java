@@ -7,6 +7,7 @@ import Project.GestioneAziendale.Entities.Dipendente;
 import Project.GestioneAziendale.Mappers.DipendenteMapper;
 import Project.GestioneAziendale.Repositories.DipartimentoRepository;
 import Project.GestioneAziendale.Repositories.DipendeteRepository;
+import Project.GestioneAziendale.Repositories.PosizioneLavorativaRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,11 +25,13 @@ public class DipendenteService {
 
     private final DipartimentoRepository dipartimentoRepository;
 
+    private final PosizioneLavorativaRepository posizioneLavorativaRepository;
     @Autowired
-    public DipendenteService(DipendenteMapper dipendenteMapper, DipendeteRepository dipendeteRepository, DipartimentoRepository dipartimentoRepository) {
+    public DipendenteService(DipendenteMapper dipendenteMapper, DipendeteRepository dipendeteRepository, DipartimentoRepository dipartimentoRepository, PosizioneLavorativaRepository posizioneLavorativaRepository) {
         this.dipendenteMapper = dipendenteMapper;
         this.dipendeteRepository = dipendeteRepository;
         this.dipartimentoRepository = dipartimentoRepository;
+        this.posizioneLavorativaRepository = posizioneLavorativaRepository;
     }
 
     public DipendenteResponse registerDipendente(DipendenteRequestRegister dipendenteRequestRegister){
@@ -61,6 +64,9 @@ public class DipendenteService {
         dipendente.setTelefono(dipendenteRequestUpdate.telefono());
         dipendente.setImmagine_profilo(dipendenteRequestUpdate.immagine_profilo());
         dipendente.setLuogo_nascita(dipendenteRequestUpdate.luogo_nascita());
+        dipendente.setPosizioneLavorativa(posizioneLavorativaRepository
+                .findById(dipendenteRequestUpdate.id_posizione())
+                .orElseThrow(()-> new EntityNotFoundException("Posizione lavorativa con id " + dipendenteRequestUpdate.id_posizione() + " non trovato")));
 
         return DipendenteResponse
                 .builder()
