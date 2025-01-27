@@ -30,13 +30,13 @@ public class NewsController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<NewsResponse> create(@RequestBody @Valid NewsRequest request){
+    public ResponseEntity<NewsResponse> create(@RequestBody @Valid NewsRequest request) throws Exception {
         return new ResponseEntity<>(newsService.createNews(request), HttpStatus.CREATED);
     }
 
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<NewsResponse> update(@PathVariable Long id, @RequestBody @Valid NewsUpdate request) {
+    public ResponseEntity<NewsResponse> update(@PathVariable Long id, @RequestBody @Valid NewsUpdate request) throws Exception {
         return new ResponseEntity<>(newsService.updateNews(id, request), HttpStatus.OK);
     }
     @DeleteMapping("/delete/{id}")
