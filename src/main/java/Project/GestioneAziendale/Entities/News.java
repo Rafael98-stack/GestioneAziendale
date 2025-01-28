@@ -26,6 +26,5 @@ public class News {
     @JoinColumn(name = "id_dipendente")
     private Dipendente dipendente;
 
-    @ManyToMany(mappedBy = "newses")
     private List<Commento> commenti = new ArrayList<>();
 }
