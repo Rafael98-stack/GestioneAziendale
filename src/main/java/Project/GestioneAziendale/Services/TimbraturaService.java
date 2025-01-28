@@ -23,8 +23,6 @@ public class TimbraturaService
     @Autowired
     private TimbraturaMapper timbraturaMapper;
     @Autowired
-    private DipendenteService dipendenteService;
-    @Autowired
     private DipendeteRepository dipendeteRepository;
 
     public TimbraturaResponse registerTimbratura(TimbraturaRequestRegister timbraturaRequestRegister)
@@ -51,17 +49,11 @@ public class TimbraturaService
 
 public TimbraturaResponse updateTimbraturaById(TimbraturaRequestUpdate timbraturaRequestUpdate) throws Exception {
         // Recupera la timbratura esistente o lancia un'eccezione se non trovata
-Timbratura timbratura = timbraturaMapper.fromTimbraturaRequestUpdate(timbraturaRequestUpdate);
-
-        if (timbratura.getDipendente() !=null)
-        {
-            // Aggiorna il dipendente associato (opzionale)
-            Dipendente dipendente = dipendeteRepository.findById(timbratura.getDipendente().getId())
-                    .orElseThrow(() -> new DipendenteNotFoundException("Dipendente con ID " + timbratura.getDipendente() + " non trovato"));
-            timbratura.setDipendente(dipendente);
-        }
-
-        // Salva la timbratura aggiornata
+    Timbratura timbratura = timbraturaMapper.fromTimbraturaRequestUpdate(timbraturaRequestUpdate);
+    Dipendente dipendente = dipendeteRepository.findById(timbraturaRequestUpdate.id_dipendente())
+            .orElseThrow(() -> new DipendenteNotFoundException("Dipendente con ID " + timbraturaRequestUpdate.id_dipendente() + " non trovata"));
+    dipendente.setTimbratura(timbratura);
+    // Salva la timbratura aggiornata
         return TimbraturaResponse
                 .builder()
                 .id(timbraturaRepository.save(timbratura).getId())

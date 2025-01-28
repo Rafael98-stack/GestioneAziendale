@@ -51,7 +51,7 @@ public class Dipendente {
     @JoinColumn(name = "id_posizione")
     private PosizioneLavorativa posizioneLavorativa;
 
-    @OneToMany()
-    @JoinColumn(name = "id_dipendente")
-    private Dipendente dipendente;
+    @ManyToOne()
+    @JoinColumn(name = "id_tibratura")
+    private Timbratura timbratura;
 }

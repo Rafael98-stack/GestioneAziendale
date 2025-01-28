@@ -3,6 +3,7 @@ package Project.GestioneAziendale.Mappers;
 import Project.GestioneAziendale.Dtos.TimbraturaDtos.TimbraturaRequestRegister;
 import Project.GestioneAziendale.Dtos.TimbraturaDtos.TimbraturaRequestUpdate;
 import Project.GestioneAziendale.Entities.Timbratura;
+import Project.GestioneAziendale.ExceptionHandlers.Exceptions.CanNotUpdateException;
 import Project.GestioneAziendale.ExceptionHandlers.Exceptions.TimbraturaNotFoundException;
 import Project.GestioneAziendale.Repositories.TimbraturaRepository;
 import Project.GestioneAziendale.Services.DipendenteService;
@@ -23,9 +24,7 @@ public class TimbraturaMapper {
         return Timbratura
                 .builder()
                 .data_corrente(LocalDate.now())
-                .dipendente(dipendenteService.getDipendenteById(timbraturaRequestRegister.id_dipendente()))
                 .build();
-
     }
 
     public Timbratura fromTimbraturaRequestUpdate(TimbraturaRequestUpdate timbraturaRequestUpdate) throws Exception {
@@ -36,25 +35,25 @@ public class TimbraturaMapper {
         switch (timbraturaRequestUpdate.numero_scelta()) {
             case 1:
                 if (timbratura.getOrario_entrata() != null) {
-                    throw new Exception("Orario entrata già esistente");
+                    throw new CanNotUpdateException("Orario entrata già esistente");
                 }
             timbratura.setOrario_entrata(LocalDateTime.now());
                 return timbratura;
             case 2:
                 if (timbratura.getInizio_pranzo() != null) {
-                    throw new Exception("Inizio pranzo già esistente");
+                    throw new CanNotUpdateException("Inizio pranzo già esistente");
                 }
                 timbratura.setInizio_pranzo(LocalDateTime.now());
                 return timbratura;
                 case 3:
                 if (timbratura.getFine_pranzo() != null) {
-                    throw new Exception("Fine pranzo già esistente");
+                    throw new CanNotUpdateException("Fine pranzo già esistente");
                 }
                 timbratura.setFine_pranzo(LocalDateTime.now());
                 return timbratura;
                 case 4:
                 if (timbratura.getUscita() != null) {
-                throw new Exception("Uscita già esistente");
+                throw new CanNotUpdateException("Uscita già esistente");
                 }
                 timbratura.setUscita(LocalDateTime.now());
                     return timbratura;
