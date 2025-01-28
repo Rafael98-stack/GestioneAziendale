@@ -16,6 +16,13 @@ public class PosizioneLavorativaMapper {
     DipartimentoRepository dipartimentoRepository;
 
     public PosizioneLavorativa fromPosizioneLavorativaRequest(PosizioneLavorativaRequest request){
+        if (request.dipartimenti()== null){
+            return PosizioneLavorativa
+                    .builder()
+                    .nome(request.nome())
+                    .descrizione(request.descrizione())
+                    .build();
+        }
         return PosizioneLavorativa
                 .builder()
                 .nome(request.nome())

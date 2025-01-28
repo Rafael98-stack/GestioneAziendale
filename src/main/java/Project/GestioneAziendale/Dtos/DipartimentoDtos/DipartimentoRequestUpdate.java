@@ -1,7 +1,6 @@
 package Project.GestioneAziendale.Dtos.DipartimentoDtos;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 
 import java.util.Set;
 
@@ -10,7 +9,7 @@ public record DipartimentoRequestUpdate(
         String nome,
         @NotBlank(message = "La descrizione del dipartimento non può essere blank o null")
         String descrizione,
-@NotNull(message = "Inserire almeno una posizione lavorativa")
-        Set<Long> id_posizione_lavorativa
+        Set<Long> id_posizione_lavorativa,
+        Long id_dipedente
 ) {
 }
