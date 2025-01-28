@@ -32,7 +32,7 @@ public class ComunicazioneScheduledService implements Job {
     public EntityResponse createComunicazioneScheduled(ComunicazioneScheduledRequest request)
             throws EntityNotFoundException, IllegalTransactionException, SchedulerException
     {
-       
+
     }
 
 
