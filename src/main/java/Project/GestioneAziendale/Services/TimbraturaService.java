@@ -5,6 +5,7 @@ import Project.GestioneAziendale.Dtos.TimbraturaDtos.TimbraturaRequestUpdate;
 import Project.GestioneAziendale.Dtos.TimbraturaDtos.TimbraturaResponse;
 import Project.GestioneAziendale.Entities.Dipendente;
 import Project.GestioneAziendale.Entities.Timbratura;
+import Project.GestioneAziendale.ExceptionHandlers.Exceptions.DipendenteNotFoundException;
 import Project.GestioneAziendale.Mappers.TimbraturaMapper;
 import Project.GestioneAziendale.Repositories.DipendeteRepository;
 import Project.GestioneAziendale.Repositories.TimbraturaRepository;
@@ -56,7 +57,7 @@ Timbratura timbratura = timbraturaMapper.fromTimbraturaRequestUpdate(timbraturaR
         {
             // Aggiorna il dipendente associato (opzionale)
             Dipendente dipendente = dipendeteRepository.findById(timbratura.getDipendente().getId())
-                    .orElseThrow(() -> new EntityNotFoundException("Dipendente con ID " + timbratura.getDipendente() + " non trovato"));
+                    .orElseThrow(() -> new DipendenteNotFoundException("Dipendente con ID " + timbratura.getDipendente() + " non trovato"));
             timbratura.setDipendente(dipendente);
         }
 

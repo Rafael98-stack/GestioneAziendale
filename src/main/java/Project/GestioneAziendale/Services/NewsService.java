@@ -6,24 +6,25 @@ import Project.GestioneAziendale.Dtos.NewsDtos.NewsUpdate;
 import Project.GestioneAziendale.Entities.Dipendente;
 import Project.GestioneAziendale.Entities.News;
 import Project.GestioneAziendale.Entities.PosizioneLavorativa;
+import Project.GestioneAziendale.ExceptionHandlers.Exceptions.*;
 import Project.GestioneAziendale.Mappers.NewsMapper;
 import Project.GestioneAziendale.Repositories.DipendeteRepository;
 import Project.GestioneAziendale.Repositories.NewsRepository;
 import Project.GestioneAziendale.Repositories.PosizioneLavorativaRepository;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
 public class NewsService {
-    @Autowired
+
     private final NewsRepository newsRepository;
-    @Autowired
+
     private final NewsMapper newsMapper;
-    @Autowired
+
     private final DipendeteRepository dipendeteRepository;
-    @Autowired
+
     private final PosizioneLavorativaRepository posizioneLavorativaRepository;
 
     @Autowired
@@ -36,26 +37,27 @@ public class NewsService {
 
     public NewsResponse createNews(NewsRequest request) throws Exception {
         Dipendente dipendente = dipendeteRepository.findById(request.id_dipendente())
-                .orElseThrow(() -> new EntityNotFoundException("Dipendente non esiste"));
+                .orElseThrow(() -> new DipendenteNotFoundException("Dipendente non esiste"));
 
         PosizioneLavorativa posizioneLavorativa = posizioneLavorativaRepository.findById(dipendente.getPosizioneLavorativa().getId())
-                .orElseThrow(() -> new EntityNotFoundException("Posizione non esiste"));
+                .orElseThrow(() -> new PosizioneNotFoundException("Posizione non esiste"));
 
         if (posizioneLavorativa.getNome().equalsIgnoreCase("publisher")){
             News news = newsMapper.fromNewsRequest(request);
-            news.setLike(0L);
+            news.setLikes(0L);
             return NewsResponse
                     .builder()
                     .id(newsRepository.save(news).getId())
                     .build();
         } else {
-            throw  new Exception("Non puoi creare una News");
+            throw  new CanNotCreateException("Non puoi creare una News");
         }
 
     }
 
     public News getNewsById(Long id){
-        return newsRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("questa news non esiste"));
+        return newsRepository.findById(id)
+                .orElseThrow(() -> new NewsNotFoundException("questa news non esiste"));
     }
 
     public List<News> getAllNews(){
@@ -64,13 +66,14 @@ public class NewsService {
 
     public NewsResponse updateNews(Long id, NewsUpdate newsUpdate) throws Exception {
         Dipendente dipendente = dipendeteRepository.findById(newsUpdate.id_dipendente())
-                .orElseThrow(() -> new EntityNotFoundException("Dipendente non esiste"));
+                .orElseThrow(() -> new DipendenteNotFoundException("Dipendente non esiste"));
 
         PosizioneLavorativa posizioneLavorativa = posizioneLavorativaRepository.findById(dipendente.getPosizioneLavorativa().getId())
-                .orElseThrow(() -> new EntityNotFoundException("Posizione non esiste"));
+                .orElseThrow(() -> new PosizioneNotFoundException("Posizione non esiste"));
 
         if (posizioneLavorativa.getNome().equalsIgnoreCase("publisher")){
-        News news = newsRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("news non esistente"));
+        News news = newsRepository.findById(id)
+                .orElseThrow(() -> new NewsNotFoundException("news non esistente"));
         news.setTitolo(newsUpdate.titolo());
         news.setContenuto(newsUpdate.contenuto());
         news.setImmagine(newsUpdate.immagine());
@@ -79,14 +82,15 @@ public class NewsService {
                 .id( newsRepository.save(news).getId())
                 .build();
         } else {
-            throw  new Exception("Non puoi aggiornare una News");
+            throw  new CanNotUpdateException("Non puoi aggiornare una News");
         }
 
     }
 
     public void likeNews(Long id){
-        News news = newsRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("news non esistente"));
-        news.setLike(news.getLike() + 1);
+        News news = newsRepository.findById(id)
+                .orElseThrow(() -> new NewsNotFoundException("news non esistente"));
+        news.setLikes(news.getLikes() + 1);
         newsRepository.save(news);
     }
 

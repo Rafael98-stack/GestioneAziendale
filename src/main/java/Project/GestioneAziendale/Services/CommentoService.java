@@ -4,10 +4,11 @@ import Project.GestioneAziendale.Dtos.CommentoDtos.CommentoInsertUpdate;
 import Project.GestioneAziendale.Dtos.CommentoDtos.CommentoRequestInsert;
 import Project.GestioneAziendale.Dtos.CommentoDtos.CommentoResponse;
 import Project.GestioneAziendale.Entities.Commento;
+import Project.GestioneAziendale.ExceptionHandlers.Exceptions.CommentoNotFoundException;
+import Project.GestioneAziendale.ExceptionHandlers.Exceptions.DipendenteNotFoundException;
 import Project.GestioneAziendale.Mappers.CommentoMapper;
 import Project.GestioneAziendale.Repositories.CommentoRepository;
 import Project.GestioneAziendale.Repositories.DipendeteRepository;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,7 +43,7 @@ public class CommentoService {
 
     public Commento getCommentoById(Long id_commento){
         return commentoRepository.findById(id_commento)
-                .orElseThrow(()-> new EntityNotFoundException("Commento con id " + id_commento + " non trovato"));
+                .orElseThrow(()-> new CommentoNotFoundException("Commento con id " + id_commento + " non trovato"));
     }
 
     public List<Commento> gtAllCommenti(){
@@ -51,10 +52,10 @@ public class CommentoService {
 
     public CommentoResponse updateCommentoById(Long id_commento, CommentoInsertUpdate commentoInsertUpdate){
         Commento commento = commentoRepository.findById(id_commento)
-                .orElseThrow(()-> new EntityNotFoundException("Commento con id " + id_commento + " non trovato"));
+                .orElseThrow(()-> new CommentoNotFoundException("Commento con id " + id_commento + " non trovato"));
         commento.setContenuto(commentoInsertUpdate.contenuto());
         commento.setDipendente(dipendeteRepository.findById(commentoInsertUpdate.id_dipendente())
-                .orElseThrow(() -> new EntityNotFoundException("Dipendente con id " + commentoInsertUpdate.id_dipendente() + " non trovato")));
+                .orElseThrow(() -> new DipendenteNotFoundException("Dipendente con id " + commentoInsertUpdate.id_dipendente() + " non trovato")));
         commento.setNews(commentoRepository.findById(commentoInsertUpdate.id_newse()).get().getNews());
 
         return CommentoResponse

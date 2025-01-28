@@ -3,9 +3,9 @@ package Project.GestioneAziendale.Mappers;
 import Project.GestioneAziendale.Dtos.TimbraturaDtos.TimbraturaRequestRegister;
 import Project.GestioneAziendale.Dtos.TimbraturaDtos.TimbraturaRequestUpdate;
 import Project.GestioneAziendale.Entities.Timbratura;
+import Project.GestioneAziendale.ExceptionHandlers.Exceptions.TimbraturaNotFoundException;
 import Project.GestioneAziendale.Repositories.TimbraturaRepository;
 import Project.GestioneAziendale.Services.DipendenteService;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +31,7 @@ public class TimbraturaMapper {
     public Timbratura fromTimbraturaRequestUpdate(TimbraturaRequestUpdate timbraturaRequestUpdate) throws Exception {
         // Aggiorna i campi della timbratura in base all'input
         Timbratura timbratura = timbraturaRepository.findById(timbraturaRequestUpdate.id_timbratura().longValue())
-                .orElseThrow(() -> new EntityNotFoundException("Timbratura con ID " + timbraturaRequestUpdate.id_timbratura() + " non trovata"));
+                .orElseThrow(() -> new TimbraturaNotFoundException("Timbratura con ID " + timbraturaRequestUpdate.id_timbratura() + " non trovata"));
 
         switch (timbraturaRequestUpdate.numero_scelta()) {
             case 1:
