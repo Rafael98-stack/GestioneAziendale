@@ -22,6 +22,7 @@ public record DipendenteRequestRegister(
         String telefono,
         String immagine_profilo,
         Long id_dipartimento,
-        Long id_posizione
+        Long id_posizione,
+        Long id_timbratura
 ) {
 }

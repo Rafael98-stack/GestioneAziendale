@@ -50,4 +50,8 @@ public class Dipendente {
     @ManyToOne()
     @JoinColumn(name = "id_posizione")
     private PosizioneLavorativa posizioneLavorativa;
+
+    @ManyToOne()
+    @JoinColumn(name = "id_tibratura")
+    private Timbratura timbratura;
 }

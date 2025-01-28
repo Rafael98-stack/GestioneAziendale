@@ -6,8 +6,10 @@ import Project.GestioneAziendale.Entities.Dipartimento;
 import Project.GestioneAziendale.Entities.Dipendente;
 import Project.GestioneAziendale.ExceptionHandlers.Exceptions.DipartimentoNotFoundException;
 import Project.GestioneAziendale.ExceptionHandlers.Exceptions.PosizioneNotFoundException;
+import Project.GestioneAziendale.ExceptionHandlers.Exceptions.TimbraturaNotFoundException;
 import Project.GestioneAziendale.Repositories.DipartimentoRepository;
 import Project.GestioneAziendale.Repositories.PosizioneLavorativaRepository;
+import Project.GestioneAziendale.Repositories.TimbraturaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,9 @@ public class DipendenteMapper {
 
     @Autowired
     PosizioneLavorativaRepository posizioneLavorativaRepository;
+
+    @Autowired
+    TimbraturaRepository timbraturaRepository;
 
     public Dipendente fromDipendenteRequestRegister(DipendenteRequestRegister dipendenteRequestRegister){
         Dipartimento dipartimento = null;
@@ -32,13 +37,9 @@ public class DipendenteMapper {
                 .cognome(dipendenteRequestRegister.cognome())
                 .data_nascita(dipendenteRequestRegister.data_nascita())
                 .nome(dipendenteRequestRegister.nome())
-                .dipartimento(dipartimento)
                 .luogo_nascita(dipendenteRequestRegister.luogo_nascita())
                 .telefono(dipendenteRequestRegister.telefono())
                 .immagine_profilo(dipendenteRequestRegister.immagine_profilo())
-                .posizioneLavorativa(posizioneLavorativaRepository
-                        .findById(dipendenteRequestRegister.id_posizione())
-                        .orElseThrow(()-> new PosizioneNotFoundException("Posizione lavorativa con id " + dipendenteRequestRegister.id_posizione() + " non trovato")))
                 .build();
     }
 
@@ -53,6 +54,8 @@ public class DipendenteMapper {
                 .nome(dipendenteRequestUpdate.nome())
                 .dipartimento(dipartimentoRepository.findById(dipendenteRequestUpdate.id_dipartimento())
                         .orElseThrow(()-> new DipartimentoNotFoundException("Dipartimento con id " + dipendenteRequestUpdate.id_dipartimento() + " non trovato")))
+                .timbratura(timbraturaRepository.findById(dipendenteRequestUpdate.id_timbratura())
+                        .orElseThrow(()-> new TimbraturaNotFoundException("Timbratura con id " + dipendenteRequestUpdate.id_timbratura() + " non trovato")))
                 .luogo_nascita(dipendenteRequestUpdate.luogo_nascita())
                 .telefono(dipendenteRequestUpdate.telefono())
                 .immagine_profilo(dipendenteRequestUpdate.immagine_profilo())

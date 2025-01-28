@@ -5,6 +5,7 @@ import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -23,8 +24,6 @@ public class Timbratura {
     private LocalDateTime uscita;
     private LocalDate data_corrente;
 
-    @OneToOne
-    @JoinColumn(name = "id_dipendente")
-    private Dipendente dipendente;
-
+    @OneToMany(mappedBy = "timbratura")
+    private List<Dipendente> dipendenti;
 }
