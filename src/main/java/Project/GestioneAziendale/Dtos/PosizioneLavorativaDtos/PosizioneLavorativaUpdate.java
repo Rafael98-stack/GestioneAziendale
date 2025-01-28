@@ -1,7 +1,6 @@
 package Project.GestioneAziendale.Dtos.PosizioneLavorativaDtos;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 
 import java.util.Set;
 
@@ -10,7 +9,7 @@ public record PosizioneLavorativaUpdate(
         String nome,
         @NotBlank
         String descrizione,
-        @NotEmpty
-        Set<Long> dipartimenti
+        Set<Long> dipartimenti,
+        Long id_dipendente
 ) {
 }
