@@ -2,8 +2,8 @@ package Project.GestioneAziendale.Mappers;
 
 import Project.GestioneAziendale.Dtos.PosizioneLavorativaDtos.PosizioneLavorativaRequest;
 import Project.GestioneAziendale.Entities.PosizioneLavorativa;
+import Project.GestioneAziendale.ExceptionHandlers.Exceptions.DipartimentoNotFoundException;
 import Project.GestioneAziendale.Repositories.DipartimentoRepository;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +22,8 @@ public class PosizioneLavorativaMapper {
                 .descrizione(request.descrizione())
                 .dipartimenti(request.dipartimenti().stream().map(id ->{
                     try {
-                        return dipartimentoRepository.findById(id).orElseThrow(()-> new EntityNotFoundException("Dipartimenti non trovati"));
+                        return dipartimentoRepository.findById(id)
+                                .orElseThrow(()-> new DipartimentoNotFoundException("Dipartimenti non trovati"));
                     } catch (RuntimeException e) {
                         throw new RuntimeException(e);
                     }

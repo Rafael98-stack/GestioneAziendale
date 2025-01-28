@@ -4,6 +4,9 @@ import Project.GestioneAziendale.Dtos.DipendenteDtos.DipendenteRequestRegister;
 import Project.GestioneAziendale.Dtos.DipendenteDtos.DipendenteRequestUpdate;
 import Project.GestioneAziendale.Dtos.DipendenteDtos.DipendenteResponse;
 import Project.GestioneAziendale.Entities.Dipendente;
+import Project.GestioneAziendale.ExceptionHandlers.Exceptions.DipartimentoNotFoundException;
+import Project.GestioneAziendale.ExceptionHandlers.Exceptions.DipendenteNotFoundException;
+import Project.GestioneAziendale.ExceptionHandlers.Exceptions.PosizioneNotFoundException;
 import Project.GestioneAziendale.Mappers.DipendenteMapper;
 import Project.GestioneAziendale.Repositories.DipartimentoRepository;
 import Project.GestioneAziendale.Repositories.DipendeteRepository;
@@ -53,11 +56,11 @@ public class DipendenteService {
 
     public DipendenteResponse updateDipendeteById(Long id_dipendente, DipendenteRequestUpdate dipendenteRequestUpdate){
         Dipendente dipendente = dipendeteRepository.findById(id_dipendente)
-                .orElseThrow(() -> new EntityNotFoundException("dipendente con id " + id_dipendente + " non trovato"));
+                .orElseThrow(() -> new DipendenteNotFoundException("dipendente con id " + id_dipendente + " non trovato"));
         dipendente.setCognome(dipendenteRequestUpdate.cognome());
         dipendente.setEmail(dipendenteRequestUpdate.email());
         dipendente.setDipartimento(dipartimentoRepository.findById(dipendenteRequestUpdate.id_dipartimento())
-                .orElseThrow(() -> new EntityNotFoundException("Dipartimento con id " + dipendenteRequestUpdate.id_dipartimento() + " non trovato")));
+                .orElseThrow(() -> new DipartimentoNotFoundException("Dipartimento con id " + dipendenteRequestUpdate.id_dipartimento() + " non trovato")));
         dipendente.setNome(dipendenteRequestUpdate.nome());
         dipendente.setData_nascita(dipendenteRequestUpdate.data_nascita());
         dipendente.setPassword(dipendenteRequestUpdate.password());
@@ -66,7 +69,7 @@ public class DipendenteService {
         dipendente.setLuogo_nascita(dipendenteRequestUpdate.luogo_nascita());
         dipendente.setPosizioneLavorativa(posizioneLavorativaRepository
                 .findById(dipendenteRequestUpdate.id_posizione())
-                .orElseThrow(()-> new EntityNotFoundException("Posizione lavorativa con id " + dipendenteRequestUpdate.id_posizione() + " non trovato")));
+                .orElseThrow(()-> new PosizioneNotFoundException("Posizione lavorativa con id " + dipendenteRequestUpdate.id_posizione() + " non trovato")));
 
         return DipendenteResponse
                 .builder()
