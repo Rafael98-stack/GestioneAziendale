@@ -36,7 +36,7 @@ public class TimbraturaController {
 
 
     @PutMapping("/update")
-    public ResponseEntity<TimbraturaResponse> update( @RequestBody @Valid TimbraturaRequestUpdate request) {
+public ResponseEntity<TimbraturaResponse> update( @RequestBody @Valid TimbraturaRequestUpdate request) throws Exception {
         return new ResponseEntity<>(timbraturaService.updateTimbraturaById(request), HttpStatus.OK);
     }
     @DeleteMapping("/delete/{id}")
