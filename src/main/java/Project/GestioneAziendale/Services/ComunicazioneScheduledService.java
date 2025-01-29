@@ -20,35 +20,20 @@ import org.springframework.web.servlet.function.EntityResponse;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
 public class ComunicazioneScheduledService implements Job {
 
-    @Autowired
-    private Scheduler scheduler;
-    @Autowired
-    private ComunicazioneScheduledRepository comunicazioneScheduledRepository;
-    @Autowired
-    private ComunicazioneScheduled comunicazioneScheduled;
-    @Autowired
-    private ComunicazioneScheduledRequest comunicazioneScheduledRequest;
-    @Autowired
-    private Dipendente dipendente;
-    @Autowired
-    private ComunicazioneAziendaleRepository comunicazioneAziendaleRepository;
-    @Autowired
-    private ComunicazioneAziendaleService comunicazioneAziendaleService;
-    @Autowired
-    private DipendenteService dipendenteService;
+    private final Scheduler scheduler;
+    private final ComunicazioneScheduledRepository comunicazioneScheduledRepository;
+    private final ComunicazioneAziendaleService comunicazioneAziendaleService;
+    private final DipendenteService dipendenteService;
 
-    public ComunicazioneScheduledService(Scheduler scheduler, ComunicazioneScheduledRepository comunicazioneScheduledRepository, ComunicazioneScheduled comunicazioneScheduled, ComunicazioneScheduledRequest comunicazioneScheduledRequest, Dipendente dipendente, ComunicazioneAziendaleRepository comunicazioneAziendaleRepository, ComunicazioneAziendaleService comunicazioneAziendaleService, DipendenteService dipendenteService) {
+    public ComunicazioneScheduledService(Scheduler scheduler, ComunicazioneScheduledRepository comunicazioneScheduledRepository, ComunicazioneAziendaleService comunicazioneAziendaleService, DipendenteService dipendenteService) {
         this.scheduler = scheduler;
         this.comunicazioneScheduledRepository = comunicazioneScheduledRepository;
-        this.comunicazioneScheduled = comunicazioneScheduled;
-        this.comunicazioneScheduledRequest = comunicazioneScheduledRequest;
-        this.dipendente = dipendente;
-        this.comunicazioneAziendaleRepository = comunicazioneAziendaleRepository;
         this.comunicazioneAziendaleService = comunicazioneAziendaleService;
         this.dipendenteService = dipendenteService;
     }
@@ -59,7 +44,7 @@ public class ComunicazioneScheduledService implements Job {
 
     public List<ComunicazioneScheduled> getAllByIdDipendente(Long id){
         List<ComunicazioneScheduled> comunicazioni = comunicazioneScheduledRepository.findAll().stream()
-                .filter(c -> c.getDipendente().getId() == id)
+                .filter(c -> Objects.equals(c.getDipendente().getId(), id))
                 .collect(Collectors.toList());;
 
         if (comunicazioni.isEmpty()) {
