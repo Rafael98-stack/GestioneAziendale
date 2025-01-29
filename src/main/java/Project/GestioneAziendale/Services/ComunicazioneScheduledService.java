@@ -20,10 +20,13 @@ import org.springframework.web.servlet.function.EntityResponse;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ComunicazioneScheduledService implements Job {
 
+    @Autowired
+    private Scheduler scheduler;
     @Autowired
     private ComunicazioneScheduledRepository comunicazioneScheduledRepository;
     @Autowired
@@ -43,8 +46,10 @@ public class ComunicazioneScheduledService implements Job {
         return comunicazioneScheduledRepository.findById(id).orElseThrow(() -> new MyEntityNotFoundException("Comunicazione con id " + id + " non trovata"));
     }
 
-    public List<ComunicazioneScheduled> getAllByIdDpendente(Long id){
-        List<ComunicazioneScheduled> comunicazioni = comunicazioneScheduledRepository.findAllById(Long id);
+    public List<ComunicazioneScheduled> getAllByIdDipendente(Long id){
+        List<ComunicazioneScheduled> comunicazioni = comunicazioneScheduledRepository.findAll().stream()
+                .filter(c -> c.getDipendente().getId() == id)
+                .collect(Collectors.toList());;
 
         if (comunicazioni.isEmpty()) {
             throw new ComunicazioneNotFoundException("Nessuna comunicazione trovata per il dipendente con ID: " + id);
@@ -58,16 +63,15 @@ public class ComunicazioneScheduledService implements Job {
     }
 
     public EntityIdResponse createComunicazioneScheduled(ComunicazioneScheduledRequest request) throws MyEntityNotFoundException, SchedulerException {
-        // Verifico che l'utente esista e lo prendo
-        Dipendente dip = dipendenteService.getDipendenteById(request.id_dipendente());
 
-        ComunicazioneScheduled comunicazioneScheduled = comunicazioneScheduledRepository.save(ComunicazioneScheduled
+
+        ComunicazioneScheduled comunicazioneScheduled = ComunicazioneScheduled
                 .builder()
                 .titolo(request.titolo())
                 .contenuto(request.contenuto())
                 .publishTime(request.publishTime())
-                .dipendente(dipendenteService.getDipendenteById(request.id_dipendente())
-                .build());
+                .dipendente(dipendenteService.getDipendenteById(request.id_dipendente()))
+                .build();
 
         comunicazioneScheduledRepository.save(comunicazioneScheduled);
 
@@ -77,7 +81,7 @@ public class ComunicazioneScheduledService implements Job {
                 .contenuto(request.contenuto())
                 .id_dipendente(request.id_dipendente())
                 .build();
-        JobDetail jobDetail = buildJobDetail(comunicazioneScheduled, comunicazioneScheduledRequest);
+        JobDetail jobDetail = buildJobDetail(comunicazioneScheduled, comunicazioneAziendaleRequest);
         org.quartz.Trigger trigger = buildJobTrigger(jobDetail, Date.from(comunicazioneScheduled.getPublishTime().atZone(ZoneId.systemDefault()).toInstant()));
         scheduler.scheduleJob(jobDetail, trigger);
         return EntityIdResponse.builder().id(comunicazioneScheduled.getId()).build();
@@ -114,7 +118,7 @@ public class ComunicazioneScheduledService implements Job {
         Long id_scheduled = jobDataMap.getLongValue("id");
         try {
             comunicazioneAziendaleService.insertComunicazione(request);
-        } catch (MyEntityNotFoundException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
         comunicazioneScheduledRepository.deleteById(id_scheduled);
@@ -136,7 +140,7 @@ public class ComunicazioneScheduledService implements Job {
         return createComunicazioneScheduled(comunicazioneScheduledRequest);
     }
 
-    public void deleteComunicazioneSchedulataById(Long id) throws SchedulerException, MyEntityNotFoundException {
+    public void deleteComunicazioneScheduledById(Long id) throws SchedulerException, MyEntityNotFoundException {
         ComunicazioneScheduled comunicazioneScheduled = comunicazioneScheduledRepository
                 .findById(id)
                 .orElseThrow(() -> new MyEntityNotFoundException("La comunicazione schedulata con " + id + " non è presente"));
