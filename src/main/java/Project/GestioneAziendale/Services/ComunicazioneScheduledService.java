@@ -120,7 +120,7 @@ public class ComunicazioneScheduledService implements Job {
         comunicazioneScheduledRepository.deleteById(id_scheduled);
     }
 
-    public EntityIdResponse updateComunicazioneScheduled(Long id, ComunicazioneScheduledUpdateRequest request) throws SchedulerException {
+    public EntityIdResponse updateComunicazioneScheduled(Long id, ComunicazioneScheduledUpdateRequest request) throws SchedulerException, MyEntityNotFoundException {
         ComunicazioneScheduled comunicazioneScheduled = comunicazioneScheduledRepository
                 .findById(id)
                 .orElseThrow(() -> new MyEntityNotFoundException("La comunicazione schedulata con " + id + " non è presente"));
@@ -136,7 +136,7 @@ public class ComunicazioneScheduledService implements Job {
         return createComunicazioneScheduled(comunicazioneScheduledRequest);
     }
 
-    public void deleteComunicazioneSchedulataById(Long id) throws SchedulerException {
+    public void deleteComunicazioneSchedulataById(Long id) throws SchedulerException, MyEntityNotFoundException {
         ComunicazioneScheduled comunicazioneScheduled = comunicazioneScheduledRepository
                 .findById(id)
                 .orElseThrow(() -> new MyEntityNotFoundException("La comunicazione schedulata con " + id + " non è presente"));
