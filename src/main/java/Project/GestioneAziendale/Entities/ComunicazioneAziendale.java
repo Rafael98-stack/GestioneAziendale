@@ -9,7 +9,7 @@ import lombok.*;
 @Setter
 @Getter
 @Builder
-
+@Table(name = "comunicazione")
 public class ComunicazioneAziendale {
     @Id
     @GeneratedValue

@@ -12,7 +12,7 @@ import java.util.List;
 @Setter
 @Getter
 @Builder
-
+@Table(name ="news")
 public class News {
     @Id
     @GeneratedValue
