@@ -42,6 +42,17 @@ public class ComunicazioneScheduledService implements Job {
     @Autowired
     private DipendenteService dipendenteService;
 
+    public ComunicazioneScheduledService(Scheduler scheduler, ComunicazioneScheduledRepository comunicazioneScheduledRepository, ComunicazioneScheduled comunicazioneScheduled, ComunicazioneScheduledRequest comunicazioneScheduledRequest, Dipendente dipendente, ComunicazioneAziendaleRepository comunicazioneAziendaleRepository, ComunicazioneAziendaleService comunicazioneAziendaleService, DipendenteService dipendenteService) {
+        this.scheduler = scheduler;
+        this.comunicazioneScheduledRepository = comunicazioneScheduledRepository;
+        this.comunicazioneScheduled = comunicazioneScheduled;
+        this.comunicazioneScheduledRequest = comunicazioneScheduledRequest;
+        this.dipendente = dipendente;
+        this.comunicazioneAziendaleRepository = comunicazioneAziendaleRepository;
+        this.comunicazioneAziendaleService = comunicazioneAziendaleService;
+        this.dipendenteService = dipendenteService;
+    }
+
     public ComunicazioneScheduled getById(Long id) throws MyEntityNotFoundException {
         return comunicazioneScheduledRepository.findById(id).orElseThrow(() -> new MyEntityNotFoundException("Comunicazione con id " + id + " non trovata"));
     }
