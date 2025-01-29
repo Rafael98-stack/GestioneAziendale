@@ -5,6 +5,7 @@ import Project.GestioneAziendale.Dtos.ComunicazioneScheduledDtos.ComunicazioneSc
 import Project.GestioneAziendale.Dtos.ComunicazioneScheduledDtos.EntityIdResponse;
 import Project.GestioneAziendale.Dtos.ComunicazioneScheduledDtos.GenericResponse;
 import Project.GestioneAziendale.ExceptionHandlers.Exceptions.IllegalTransactionException;
+import Project.GestioneAziendale.ExceptionHandlers.Exceptions.MyEntityNotFoundException;
 import Project.GestioneAziendale.Services.ComunicazioneScheduledService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,18 +22,18 @@ public class ComunicazioneScheduledController
     private ComunicazioneScheduledService comunicazioneScheduledService;
 
    @PostMapping("/create")
-   public ResponseEntity<EntityIdResponse> createComunicazioneScheduled(@RequestBody ComunicazioneScheduledRequest request) throws IllegalTransactionException, EntityNotFoundException, SchedulerException {
+   public ResponseEntity<EntityIdResponse> createComunicazioneScheduled(@RequestBody ComunicazioneScheduledRequest request) throws IllegalTransactionException, EntityNotFoundException, SchedulerException, MyEntityNotFoundException {
        return new ResponseEntity<>(comunicazioneScheduledService.createComunicazioneScheduled(request), HttpStatus.CREATED);
    }
 
     @PutMapping("/update/{id}")
     public ResponseEntity<EntityIdResponse> updateComunicazioneScheduled(@PathVariable Long id,
-                                                                       @RequestBody ComunicazioneScheduledUpdateRequest request) throws SchedulerException {
+                                                                       @RequestBody ComunicazioneScheduledUpdateRequest request) throws SchedulerException, MyEntityNotFoundException {
         return new ResponseEntity<>(comunicazioneScheduledService.updateComunicazioneScheduled(id, request), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<GenericResponse> deleteById(@PathVariable Long id) throws SchedulerException {
+    public ResponseEntity<GenericResponse> deleteById(@PathVariable Long id) throws SchedulerException, MyEntityNotFoundException {
         comunicazioneScheduledService.deleteComunicazioneScheduledById(id);
         return new ResponseEntity<>(new GenericResponse
                 ("Comunicazione schedulata con id " + id + " eliminata con successo"), HttpStatus.OK);
