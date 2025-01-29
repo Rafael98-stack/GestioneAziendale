@@ -4,6 +4,7 @@ import Project.GestioneAziendale.Dtos.NewsDtos.NewsRequest;
 import Project.GestioneAziendale.Entities.News;
 import Project.GestioneAziendale.ExceptionHandlers.Exceptions.DipendenteNotFoundException;
 import Project.GestioneAziendale.Repositories.DipendeteRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

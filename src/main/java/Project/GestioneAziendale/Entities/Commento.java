@@ -23,4 +23,8 @@ public class Commento {
     @JoinColumn(name = "id_news", nullable = false)
     private News news;;
 
+    @ManyToOne()
+    @JoinColumn(name = "id_scheduled_news")
+    private NewsScheduled news_scheduled;
+
 }

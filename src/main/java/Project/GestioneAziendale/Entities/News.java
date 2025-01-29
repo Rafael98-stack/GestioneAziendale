@@ -19,7 +19,7 @@ public class News {
     private Long id;
     private String titolo;
     private String contenuto;
-    private Long likes = 0L;
+    private Long like = 0l;
     private String immagine;
 
     @ManyToOne
