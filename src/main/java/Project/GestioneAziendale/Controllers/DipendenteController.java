@@ -15,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/app/v1/Dipendente")
+@CrossOrigin(origins = "http://localhost:4200")
 public class DipendenteController {
 
     @Autowired
