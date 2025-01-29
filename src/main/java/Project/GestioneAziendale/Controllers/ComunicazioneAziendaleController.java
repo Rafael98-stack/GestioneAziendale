@@ -1,14 +1,9 @@
 package Project.GestioneAziendale.Controllers;
 
-import Project.GestioneAziendale.Dtos.CommentoDtos.CommentoInsertUpdate;
-import Project.GestioneAziendale.Dtos.CommentoDtos.CommentoRequestInsert;
-import Project.GestioneAziendale.Dtos.CommentoDtos.CommentoResponse;
 import Project.GestioneAziendale.Dtos.ComunicazioneAziendaleDtos.ComunicazioneAziendaleRequest;
 import Project.GestioneAziendale.Dtos.ComunicazioneAziendaleDtos.ComunicazioneAziendaleResponse;
 import Project.GestioneAziendale.Dtos.ComunicazioneAziendaleDtos.ComunicazioneAziendaleUpdate;
-import Project.GestioneAziendale.Entities.Commento;
 import Project.GestioneAziendale.Entities.ComunicazioneAziendale;
-import Project.GestioneAziendale.Services.CommentoService;
 import Project.GestioneAziendale.Services.ComunicazioneAziendaleService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/app/v1/ComunicazioneAziendale")
+@CrossOrigin(origins = "http://localhost:4200")
 public class ComunicazioneAziendaleController {
     @Autowired
 ComunicazioneAziendaleService comunicazioneAziendaleService;

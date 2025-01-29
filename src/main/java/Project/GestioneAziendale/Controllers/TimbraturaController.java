@@ -15,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/app/v1/Timbratura")
+@CrossOrigin(origins = "http://localhost:4200")
 public class TimbraturaController {
     @Autowired
     TimbraturaService timbraturaService;
