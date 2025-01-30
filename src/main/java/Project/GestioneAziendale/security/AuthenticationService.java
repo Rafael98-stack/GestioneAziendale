@@ -1,8 +1,8 @@
 package Project.GestioneAziendale.security;
 
+import Project.GestioneAziendale.Dtos.AuthRequest;
 import Project.GestioneAziendale.Dtos.AuthenticationResponse;
 import Project.GestioneAziendale.Dtos.RegisterRequest;
-import com.example.bankApp.domain.dto.requests.AuthRequest;
 import com.example.bankApp.domain.dto.requests.ChangePasswordRequest;
 import com.example.bankApp.domain.dto.responses.ErrorResponse;
 import com.example.bankApp.domain.dto.responses.GenericResponse;
