@@ -17,6 +17,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Service
 public class AuthenticationService {
 
@@ -50,8 +52,11 @@ public class AuthenticationService {
         dipendente.setRegistrationToken(jwtToken);
         dipendenteService.insertDipendente(dipendente);
         // TODO invio email di conferma
+        /*
         String confirmationUrl = "http://localhost:8080/app/v1/auth/confirm?token=" + dipendente.getRegistrationToken();
         javaMailSender.send(createConfirmationEmail(dipendente.getEmail(), confirmationUrl));
+        */
+
         return AuthenticationResponse.builder().token(jwtToken).build();
     }
 
@@ -62,7 +67,7 @@ public class AuthenticationService {
         ));
         Dipendente dipendente = dipendenteService.getByEmail(request.email());
         String token = jwtService.generateToken(dipendente);
-        //dipendente.setLastLogin(LocalDateTime.now());
+        dipendente.setLastLogin(LocalDateTime.now());
         dipendenteService.insertDipendente(dipendente);
         return AuthenticationResponse.builder().token(token).build();
     }
@@ -75,8 +80,8 @@ public class AuthenticationService {
     private SimpleMailMessage createConfirmationEmail(String email, String confirmationUrl) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(email); // a chi mando la mail
-        message.setReplyTo("adriani.marco.93@gmail.com"); // a chi rispondo se faccio "rispondi"
-        message.setFrom("adriani.marco.93@gmail.com"); // da chi viene la mail
+        message.setReplyTo("rafaelcasapaojr@gmail.com"); // a chi rispondo se faccio "rispondi"
+        message.setFrom("rafaelcasapaojr@gmail.com"); // da chi viene la mail
         message.setSubject("CONFERMA REGISTRAZIONE BANKAPP"); // il TITOLO!
         message.setText("Ciao! Clicca su questo link per confermare la registrazione! " + confirmationUrl); // il testo!
         return message; // ritorno il messaggio
