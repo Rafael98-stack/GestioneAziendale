@@ -1,7 +1,7 @@
 package Project.GestioneAziendale.security;
 
-import com.example.bankApp.domain.dto.responses.ErrorResponse;
-import com.example.bankApp.services.TokenBlackListService;
+import Project.GestioneAziendale.Dtos.ErrorResponse;
+import Project.GestioneAziendale.Services.TokenBlackListService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.MalformedJwtException;
 import jakarta.servlet.FilterChain;
@@ -101,8 +101,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 .message(message)
                 .build();
         ObjectMapper objectMapper = new ObjectMapper();
-        String jsonReponse = objectMapper.writeValueAsString(errorResponse);
-        response.getWriter().write(jsonReponse);
+        String jsonResponse = objectMapper.writeValueAsString(errorResponse);
+        response.getWriter().write(jsonResponse);
         response.getWriter().flush();
     }
 
