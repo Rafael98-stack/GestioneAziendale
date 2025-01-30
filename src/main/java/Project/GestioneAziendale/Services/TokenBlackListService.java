@@ -1,7 +1,7 @@
 package Project.GestioneAziendale.Services;
 
+import Project.GestioneAziendale.Entities.TokenBlackList;
 import Project.GestioneAziendale.Repositories.TokenBlackListRepository;
-import com.example.bankApp.domain.entities.TokenBlackList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,11 +17,11 @@ public class TokenBlackListService {
         return tokenBlackListRepository.getByToken(token).isPresent();
     }
 
-    public void insertToken(Long id_utente, String token) {
+    public void insertToken(Long id_dipendente, String token) {
         TokenBlackList tokenBlackList = TokenBlackList
                 .builder()
                 .token(token)
-                .utente(dipendenteService.getById(id_utente))
+                .dipendente(dipendenteService.getDipendenteById(id_dipendente))
                 .build();
         tokenBlackListRepository.save(tokenBlackList);
     }
