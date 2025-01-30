@@ -1,10 +1,10 @@
 package Project.GestioneAziendale.security;
 
-import com.example.bankApp.domain.dto.requests.AuthRequest;
-import com.example.bankApp.domain.dto.requests.ChangePasswordRequest;
-import com.example.bankApp.domain.dto.requests.RegisterRequest;
-import com.example.bankApp.domain.dto.responses.AuthenticationResponse;
-import com.example.bankApp.domain.dto.responses.GenericResponse;
+import Project.GestioneAziendale.Dtos.AuthRequest;
+import Project.GestioneAziendale.Dtos.AuthenticationResponse;
+import Project.GestioneAziendale.Dtos.ComunicazioneScheduledDtos.GenericResponse;
+import Project.GestioneAziendale.Dtos.RegisterRequest;
+import Project.GestioneAziendale.ExceptionHandlers.Exceptions.MyEntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthenticationResponse> login(@RequestBody @Valid AuthRequest request) {
+    public ResponseEntity<AuthenticationResponse> login(@RequestBody @Valid AuthRequest request) throws MyEntityNotFoundException {
         return new ResponseEntity<>(authenticationService.authenticate(request), HttpStatus.CREATED);
     }
 
@@ -36,10 +36,11 @@ public class AuthenticationController {
     }
 
     @GetMapping("/confirm")
-    public ResponseEntity<GenericResponse> confirmRegistration(@RequestParam String token) {
+    public ResponseEntity<GenericResponse> confirmRegistration(@RequestParam String token) throws MyEntityNotFoundException {
         return new ResponseEntity<>(authenticationService.confirmRegistration(token), HttpStatus.CREATED);
     }
 
+    /*
     @PostMapping("/change_pw/{id_utente}")
     public ResponseEntity<?> changePassword(@PathVariable Long id_utente, @RequestBody ChangePasswordRequest request) {
         Object result = authenticationService.changePassword(id_utente, request);
@@ -49,4 +50,5 @@ public class AuthenticationController {
         return new ResponseEntity<>(result, HttpStatus.FORBIDDEN);
     }
 
+*/
 }
