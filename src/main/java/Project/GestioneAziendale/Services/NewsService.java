@@ -44,7 +44,7 @@ public class NewsService {
 
         if (posizioneLavorativa.getNome().equalsIgnoreCase("publisher")){
             News news = newsMapper.fromNewsRequest(request);
-            news.setLikes(0L);
+            news.setLike(0l);;
             return NewsResponse
                     .builder()
                     .id(newsRepository.save(news).getId())
@@ -90,7 +90,7 @@ public class NewsService {
     public void likeNews(Long id){
         News news = newsRepository.findById(id)
                 .orElseThrow(() -> new NewsNotFoundException("news non esistente"));
-        news.setLikes(news.getLikes() + 1);
+        news.setLike(news.getLike() + 1);
         newsRepository.save(news);
     }
 
