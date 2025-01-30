@@ -3,15 +3,12 @@ package Project.GestioneAziendale.security;
 import Project.GestioneAziendale.Dtos.AuthRequest;
 import Project.GestioneAziendale.Dtos.AuthenticationResponse;
 import Project.GestioneAziendale.Dtos.ComunicazioneScheduledDtos.GenericResponse;
-import Project.GestioneAziendale.Dtos.DipendenteDtos.DipendenteRequestRegister;
 import Project.GestioneAziendale.Dtos.RegisterRequest;
-
 import Project.GestioneAziendale.Entities.Dipendente;
 import Project.GestioneAziendale.Entities.Enums.Role;
 import Project.GestioneAziendale.ExceptionHandlers.Exceptions.MyEntityNotFoundException;
 import Project.GestioneAziendale.Services.DipendenteService;
 import Project.GestioneAziendale.Services.TokenBlackListService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -19,8 +16,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
 
 @Service
 public class AuthenticationService {
