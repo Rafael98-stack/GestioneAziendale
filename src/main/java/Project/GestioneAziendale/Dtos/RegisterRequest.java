@@ -19,15 +19,18 @@ public record RegisterRequest(
                 regexp = "^\\+?[0-9]+$",
                 message = "Telefono non valido")
         String telefono,
+        /*
         @Pattern(
                 regexp = "^[A-Z]{6}[0-9]{2}[A-EHLMPR-T][0-9]{2}[A-Z][0-9]{3}[A-Z]$",
                 message = "Codice fiscale non valido")
         String codiceFiscale,
+        */
         @NotBlank(message = "L'indirizzo non può essere null o blank")
         String indirizzo,
         @Past(message = "La data di nascita deve essere nel passato")
-        LocalDate dataNascita,
+        LocalDate data_nascita,
         @NotNull(message = "il comune deve essere presente")
-        EntityIdRequest comune_id
+        String luogo_nascita,
+        String immagine_profilo
 ) {
 }

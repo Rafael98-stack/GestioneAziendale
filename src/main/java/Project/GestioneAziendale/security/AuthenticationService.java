@@ -2,15 +2,16 @@ package Project.GestioneAziendale.security;
 
 import Project.GestioneAziendale.Dtos.AuthRequest;
 import Project.GestioneAziendale.Dtos.AuthenticationResponse;
+import Project.GestioneAziendale.Dtos.ComunicazioneScheduledDtos.GenericResponse;
+import Project.GestioneAziendale.Dtos.DipendenteDtos.DipendenteRequestRegister;
 import Project.GestioneAziendale.Dtos.RegisterRequest;
-import com.example.bankApp.domain.dto.requests.ChangePasswordRequest;
-import com.example.bankApp.domain.dto.responses.ErrorResponse;
-import com.example.bankApp.domain.dto.responses.GenericResponse;
-import com.example.bankApp.domain.entities.Utente;
-import com.example.bankApp.domain.enums.Role;
-import com.example.bankApp.services.ComuneService;
-import com.example.bankApp.services.TokenBlackListService;
-import com.example.bankApp.services.UtenteService;
+
+import Project.GestioneAziendale.Entities.Dipendente;
+import Project.GestioneAziendale.Entities.Enums.Role;
+import Project.GestioneAziendale.ExceptionHandlers.Exceptions.MyEntityNotFoundException;
+import Project.GestioneAziendale.Services.DipendenteService;
+import Project.GestioneAziendale.Services.TokenBlackListService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -25,11 +26,9 @@ import java.time.LocalDateTime;
 public class AuthenticationService {
 
     @Autowired
-    private UtenteService utenteService;
+    private DipendenteService dipendenteService;
     @Autowired
     private PasswordEncoder passwordEncoder;
-    @Autowired
-    private ComuneService comuneService;
     @Autowired
     private JwtService jwtService;
     @Autowired
@@ -40,37 +39,36 @@ public class AuthenticationService {
     private JavaMailSender javaMailSender;
 
     public AuthenticationResponse register(RegisterRequest request) {
-        Utente utente = Utente
+        Dipendente dipendente = Dipendente
                 .builder()
                 .nome(request.nome())
                 .cognome(request.cognome())
                 .email(request.email())
                 .password(passwordEncoder.encode(request.password()))
                 .telefono(request.telefono())
-                .codiceFiscale(request.codiceFiscale())
-                .dataNascita(request.dataNascita())
-                .indirizzo(request.indirizzo())
+                .luogo_nascita(request.luogo_nascita())
+                .data_nascita(request.data_nascita())
+                .immagine_profilo(request.immagine_profilo())
                 .role(Role.TOCONFIRM)
-                .comune(comuneService.getById(request.comune_id().id()))
                 .build();
-        String jwtToken = jwtService.generateToken(utente);
-        utente.setRegistrationToken(jwtToken);
-        utenteService.insertUtente(utente);
+        String jwtToken = jwtService.generateToken(dipendente);
+        dipendente.setRegistrationToken(jwtToken);
+        dipendenteService.insertDipendente(dipendente);
         // TODO invio email di conferma
-        String confirmationUrl = "http://localhost:8080/app/v1/auth/confirm?token=" + utente.getRegistrationToken();
-        javaMailSender.send(createConfirmationEmail(utente.getEmail(), confirmationUrl));
+        String confirmationUrl = "http://localhost:8080/app/v1/auth/confirm?token=" + dipendente.getRegistrationToken();
+        javaMailSender.send(createConfirmationEmail(dipendente.getEmail(), confirmationUrl));
         return AuthenticationResponse.builder().token(jwtToken).build();
     }
 
-    public AuthenticationResponse authenticate(AuthRequest request) {
+    public AuthenticationResponse authenticate(AuthRequest request) throws MyEntityNotFoundException {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 request.email().toLowerCase(),
                 request.password()
         ));
-        Utente utente = utenteService.getByEmail(request.email());
-        String token = jwtService.generateToken(utente);
-        utente.setLastLogin(LocalDateTime.now());
-        utenteService.insertUtente(utente);
+        Dipendente dipendente = dipendenteService.getByEmail(request.email());
+        String token = jwtService.generateToken(dipendente);
+        //dipendente.setLastLogin(LocalDateTime.now());
+        dipendenteService.insertDipendente(dipendente);
         return AuthenticationResponse.builder().token(token).build();
     }
 
@@ -89,16 +87,17 @@ public class AuthenticationService {
         return message; // ritorno il messaggio
     }
 
-    public GenericResponse confirmRegistration(String token) {
-        Utente utente = utenteService.getByRegistrationToken(token);
-        utente.setRole(Role.UTENTE);
-        utenteService.insertUtente(utente);
+    public GenericResponse confirmRegistration(String token) throws MyEntityNotFoundException {
+        Dipendente dipendente = dipendenteService.getByRegistrationToken(token);
+        dipendente.setRole(Role.UTENTE);
+        dipendenteService.insertDipendente(dipendente);
         return GenericResponse
                 .builder()
                 .message("Account verificato con successo!")
                 .build();
     }
 
+    /*
     public Object changePassword(Long id_utente, ChangePasswordRequest request) {
         Utente utente = utenteService.getById(id_utente);
         if (!passwordEncoder.matches(request.oldPassword(), utente.getPassword())) {
@@ -116,4 +115,5 @@ public class AuthenticationService {
                 .message("Password cambiata con successo")
                 .build();
     }
+    */
 }
