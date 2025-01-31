@@ -13,11 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
 
 @Service
 public class AuthenticationService {
@@ -60,6 +58,7 @@ public class AuthenticationService {
         return AuthenticationResponse.builder().token(jwtToken).build();
     }
 
+    /* CODICE ORIGINALE
     public AuthenticationResponse authenticate(AuthRequest request) throws MyEntityNotFoundException {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 request.email().toLowerCase(),
@@ -70,6 +69,17 @@ public class AuthenticationService {
         dipendente.setLastLogin(LocalDateTime.now());
         dipendenteService.insertDipendente(dipendente);
         return AuthenticationResponse.builder().token(token).build();
+    }
+     */
+
+    // Codice per testare TOCONFIRM
+    public AuthenticationResponse authenticate(AuthRequest request) throws Exception {
+        Dipendente dipendente = dipendenteService.getByEmail(request.email());
+        if (dipendente.isEnabled() && dipendente.getAuthorities().contains(new SimpleGrantedAuthority("TOCONFIRM"))) {
+            throw new RuntimeException("Account needs to be confirmed.");
+        }
+
+        return AuthenticationResponse.builder().token(jwtService.generateToken(dipendente)).build();
     }
 
     public GenericResponse logout(Long idUtente, String token) {

@@ -26,7 +26,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthenticationResponse> login(@RequestBody @Valid AuthRequest request) throws MyEntityNotFoundException {
+    public ResponseEntity<AuthenticationResponse> login(@RequestBody @Valid AuthRequest request) throws Exception {
         return new ResponseEntity<>(authenticationService.authenticate(request), HttpStatus.CREATED);
     }
 
