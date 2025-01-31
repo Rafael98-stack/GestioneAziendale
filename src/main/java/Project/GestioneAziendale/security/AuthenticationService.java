@@ -1,9 +1,7 @@
 package Project.GestioneAziendale.security;
 
-import Project.GestioneAziendale.Dtos.AuthRequest;
-import Project.GestioneAziendale.Dtos.AuthenticationResponse;
+import Project.GestioneAziendale.Dtos.*;
 import Project.GestioneAziendale.Dtos.ComunicazioneScheduledDtos.GenericResponse;
-import Project.GestioneAziendale.Dtos.RegisterRequest;
 import Project.GestioneAziendale.Entities.Dipendente;
 import Project.GestioneAziendale.Entities.Enums.Role;
 import Project.GestioneAziendale.ExceptionHandlers.Exceptions.MyEntityNotFoundException;
@@ -14,6 +12,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -60,6 +59,8 @@ public class AuthenticationService {
         return AuthenticationResponse.builder().token(jwtToken).build();
     }
 
+    /* CODICE ORIGINALE
+
     public AuthenticationResponse authenticate(AuthRequest request) throws MyEntityNotFoundException {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 request.email().toLowerCase(),
@@ -70,6 +71,25 @@ public class AuthenticationService {
         dipendente.setLastLogin(LocalDateTime.now());
         dipendenteService.insertDipendente(dipendente);
         return AuthenticationResponse.builder().token(token).build();
+    }
+    */
+
+
+    // Codice per testare TOCONFIRM
+    /*
+    */
+    public AuthenticationResponse authenticate(AuthRequest request) throws Exception {
+        Dipendente dipendente = dipendenteService.getByEmail(request.email());
+        if (dipendente.isEnabled() && dipendente.getAuthorities().contains(new SimpleGrantedAuthority("TOCONFIRM"))) {
+            throw new RuntimeException("Account needs to be confirmed.");
+        }
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                request.email().toLowerCase(),
+                request.password()
+        ));
+        dipendente.setLastLogin(LocalDateTime.now());
+        dipendenteService.insertDipendente(dipendente);
+        return AuthenticationResponse.builder().token(jwtService.generateToken(dipendente)).build();
     }
 
     public GenericResponse logout(Long idUtente, String token) {
@@ -97,10 +117,9 @@ public class AuthenticationService {
                 .build();
     }
 
-    /*
-    public Object changePassword(Long id_utente, ChangePasswordRequest request) {
-        Utente utente = utenteService.getById(id_utente);
-        if (!passwordEncoder.matches(request.oldPassword(), utente.getPassword())) {
+    public Object changePassword(Long id_dipendente, ChangePasswordRequest request) {
+        Dipendente dipendente = dipendenteService.getDipendenteById(id_dipendente);
+        if (!passwordEncoder.matches(request.oldPassword(), dipendente.getPassword())) {
             // se la vecchia password passata non coincide
             return ErrorResponse
                     .builder()
@@ -108,12 +127,12 @@ public class AuthenticationService {
                     .message("La vecchia password non è corretta")
                     .build();
         }
-        utente.setPassword(passwordEncoder.encode(request.newPassword())); // setto la nuova password
-        utenteService.insertUtente(utente);
+        dipendente.setPassword(passwordEncoder.encode(request.newPassword())); // setto la nuova password
+        dipendenteService.insertDipendente(dipendente);
         return GenericResponse
                 .builder()
                 .message("Password cambiata con successo")
                 .build();
     }
-    */
+
 }
