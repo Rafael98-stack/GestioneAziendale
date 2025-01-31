@@ -15,7 +15,7 @@
 
 @RestController
 @RequestMapping("/app/v1/posizionelavorativa")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://localhost:8080")
 public class PosizioneLavorativaController {
     @Autowired
     private PosizioneLavorativaService posizioneLavorativaService;
