@@ -49,5 +49,6 @@ public class AuthenticationController {
         }
         return new ResponseEntity<>(result, HttpStatus.FORBIDDEN);
     }
+}
 
 

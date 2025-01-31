@@ -75,12 +75,10 @@ public class DipendenteService {
         Dipendente dipendente = dipendeteRepository.findById(id_dipendente)
                 .orElseThrow(() -> new DipendenteNotFoundException("dipendente con id " + id_dipendente + " non trovato"));
         dipendente.setCognome(dipendenteRequestUpdate.cognome());
-        dipendente.setEmail(dipendenteRequestUpdate.email());
         dipendente.setDipartimento(dipartimentoRepository.findById(dipendenteRequestUpdate.id_dipartimento())
                 .orElseThrow(() -> new DipartimentoNotFoundException("Dipartimento con id " + dipendenteRequestUpdate.id_dipartimento() + " non trovato")));
         dipendente.setNome(dipendenteRequestUpdate.nome());
         dipendente.setData_nascita(dipendenteRequestUpdate.data_nascita());
-        dipendente.setPassword(dipendenteRequestUpdate.password());
         dipendente.setTelefono(dipendenteRequestUpdate.telefono());
         dipendente.setImmagine_profilo(dipendenteRequestUpdate.immagine_profilo());
         dipendente.setLuogo_nascita(dipendenteRequestUpdate.luogo_nascita());

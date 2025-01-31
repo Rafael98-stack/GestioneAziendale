@@ -47,8 +47,6 @@ public class DipendenteMapper {
     public Dipendente fromDipendenteRequestUpdate(DipendenteRequestUpdate dipendenteRequestUpdate){
         return Dipendente
                 .builder()
-                .email(dipendenteRequestUpdate.email())
-                .password(dipendenteRequestUpdate.password())
                 .cognome(dipendenteRequestUpdate.cognome())
                 .data_nascita(dipendenteRequestUpdate.data_nascita())
                 .nome(dipendenteRequestUpdate.nome())

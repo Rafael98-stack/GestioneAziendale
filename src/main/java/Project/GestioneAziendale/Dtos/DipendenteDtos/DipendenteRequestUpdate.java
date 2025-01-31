@@ -9,9 +9,6 @@ public record DipendenteRequestUpdate(
         String nome,
         @NotBlank(message = "Il cognome non può essere blank o null")
         String cognome,
-        @Email(message = "Email non valida")
-        String email,
-        String password,
         @Past(message = "La data di nascita deve essere nel passato")
         LocalDate data_nascita,
         @NotBlank(message = "Luogo di nascita non può essere null o blank")
