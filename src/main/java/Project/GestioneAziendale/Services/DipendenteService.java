@@ -6,6 +6,7 @@ import Project.GestioneAziendale.Dtos.DipendenteDtos.DipendenteResponse;
 import Project.GestioneAziendale.Entities.Dipendente;
 import Project.GestioneAziendale.ExceptionHandlers.Exceptions.DipartimentoNotFoundException;
 import Project.GestioneAziendale.ExceptionHandlers.Exceptions.DipendenteNotFoundException;
+import Project.GestioneAziendale.ExceptionHandlers.Exceptions.MyEntityNotFoundException;
 import Project.GestioneAziendale.ExceptionHandlers.Exceptions.PosizioneNotFoundException;
 import Project.GestioneAziendale.Mappers.DipendenteMapper;
 import Project.GestioneAziendale.Repositories.DipartimentoRepository;
@@ -45,9 +46,25 @@ public class DipendenteService {
               .build();
     }
 
+    public void insertDipendente(Dipendente dipendente){
+        dipendeteRepository.save(dipendente);
+    }
+
     public Dipendente getDipendenteById(Long id_dipendente){
         return dipendeteRepository.findById(id_dipendente)
                 .orElseThrow(() -> new EntityNotFoundException("dipendente con id " + id_dipendente + " non trovato"));
+    }
+
+    public Dipendente getByEmail(String email) throws MyEntityNotFoundException {
+        return dipendeteRepository
+                .findByEmail(email)
+                .orElseThrow(() -> new MyEntityNotFoundException("utente con email " + email + " non trovato"));
+    }
+
+    public Dipendente getByRegistrationToken(String token) throws MyEntityNotFoundException {
+        return dipendeteRepository
+                .findByRegistrationToken(token)
+                .orElseThrow(() -> new MyEntityNotFoundException("utente con token " + token + " non trovato"));
     }
 
     public List<Dipendente> getAllDipendenti(){
