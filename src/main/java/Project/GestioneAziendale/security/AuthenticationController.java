@@ -39,7 +39,7 @@ public class AuthenticationController {
     public ResponseEntity<GenericResponse> confirmRegistration(@RequestParam String token) throws MyEntityNotFoundException {
         return new ResponseEntity<>(authenticationService.confirmRegistration(token), HttpStatus.CREATED);
     }
-
+}
     /*
     @PostMapping("/change_pw/{id_utente}")
     public ResponseEntity<?> changePassword(@PathVariable Long id_utente, @RequestBody ChangePasswordRequest request) {
