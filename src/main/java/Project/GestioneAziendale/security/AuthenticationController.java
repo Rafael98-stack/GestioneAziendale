@@ -3,6 +3,7 @@ package Project.GestioneAziendale.security;
 
 import Project.GestioneAziendale.Dtos.AuthRequest;
 import Project.GestioneAziendale.Dtos.AuthenticationResponse;
+import Project.GestioneAziendale.Dtos.ChangePasswordRequest;
 import Project.GestioneAziendale.Dtos.ComunicazioneScheduledDtos.GenericResponse;
 import Project.GestioneAziendale.Dtos.RegisterRequest;
 import Project.GestioneAziendale.ExceptionHandlers.Exceptions.MyEntityNotFoundException;
@@ -40,7 +41,7 @@ public class AuthenticationController {
     public ResponseEntity<GenericResponse> confirmRegistration(@RequestParam String token) throws MyEntityNotFoundException {
         return new ResponseEntity<>(authenticationService.confirmRegistration(token), HttpStatus.CREATED);
     }
-    /*
+
     @PostMapping("/change_pw/{id_utente}")
     public ResponseEntity<?> changePassword(@PathVariable Long id_utente, @RequestBody ChangePasswordRequest request) {
         Object result = authenticationService.changePassword(id_utente, request);
@@ -49,5 +50,5 @@ public class AuthenticationController {
         }
         return new ResponseEntity<>(result, HttpStatus.FORBIDDEN);
     }
-     */
+
 }
